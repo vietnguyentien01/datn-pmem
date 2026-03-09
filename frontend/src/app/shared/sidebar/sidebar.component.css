@@ -1,0 +1,79 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.logo mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #FF6B35;
+    /* Primary Orange */
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    padding: 16px 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.nav-section {
+    padding: 16px 24px 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8c9ea6;
+    font-weight: 600;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    color: #b8c7ce;
+    text-decoration: none;
+    transition: all 0.2s;
+    gap: 16px;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.nav-item.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left: 4px solid #1A73E8;
+    /* Primary Blue */
+    padding-left: 20px;
+}
+
+.nav-item mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}

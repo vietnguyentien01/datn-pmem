@@ -1,0 +1,90 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Xin Nghỉ Phép</h2>
+            <p>Gửi yêu cầu nghỉ phép lên Quản lý</p>
+        </div>
+    </div>
+
+    <div class="split-layout">
+        <div class="form-container">
+            <mat-card class="data-card">
+                <mat-card-header>
+                    <mat-card-title>Đơn Xin Nghỉ Phép</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()" class="leave-form">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Loại nghỉ phép</mat-label>
+                            <mat-select formControlName="type" required>
+                                <mat-option value="Nghỉ phép năm (Paid Leave)">Nghỉ phép năm (Paid Leave)</mat-option>
+                                <mat-option value="Nghỉ ốm (Sick Leave)">Nghỉ ốm (Sick Leave)</mat-option>
+                                <mat-option value="Nghỉ không lương (Unpaid Leave)">Nghỉ không lương (Unpaid
+                                    Leave)</mat-option>
+                                <mat-option value="Khác">Khác</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="date-row">
+                            <mat-form-field appearance="outline" class="half-width">
+                                <mat-label>Từ ngày</mat-label>
+                                <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+                                <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startPicker></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="half-width">
+                                <mat-label>Đến ngày</mat-label>
+                                <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+                                <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Lý do nghỉ</mat-label>
+                            <textarea matInput formControlName="reason" rows="4" required
+                                placeholder="Nhập lý do xin nghỉ phép chi tiết..."></textarea>
+                        </mat-form-field>
+
+                        <div class="form-actions">
+                            <button mat-button type="button" (click)="leaveForm.reset()">Làm mới</button>
+                            <button mat-flat-button color="primary" type="submit"
+                                [disabled]="leaveForm.invalid || isSubmitting">
+                                <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+                                <span *ngIf="!isSubmitting">Gửi Yêu Cầu</span>
+                            </button>
+                        </div>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="history-container">
+            <mat-card class="data-card history-card">
+                <mat-card-header>
+                    <mat-card-title>Lịch Sử Yêu Cầu</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="history-list">
+                        <div class="history-item" *ngFor="let item of history">
+                            <div class="history-header">
+                                <div>
+                                    <span class="history-date">{{ item.startDate | date:'dd/MM/yyyy' }} - {{
+                                        item.endDate | date:'dd/MM/yyyy' }}</span>
+                                    <div class="history-type">{{ item.type }}</div>
+                                </div>
+                                <mat-chip
+                                    [ngClass]="{'status-pending': item.status === 'PENDING', 'status-approved': item.status === 'APPROVED', 'status-rejected': item.status === 'REJECTED'}">
+                                    {{ item.status === 'PENDING' ? 'Đang chờ' : (item.status === 'APPROVED' ? 'Đã duyệt'
+                                    : 'Từ chối') }}
+                                </mat-chip>
+                            </div>
+                            <div class="history-reason">{{ item.reason }}</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="dashboard-container">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <mat-card class="stat-card blue-card">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>people</mat-icon>
+                <mat-card-title>Tổng Nhân Viên</mat-card-title>
+                <mat-card-subtitle>Toàn hệ thống</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <h2>{{ stats.totalEmployees || 0 }}</h2>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card green-card">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>check_circle</mat-icon>
+                <mat-card-title>Đi Làm Hôm Nay</mat-card-title>
+                <mat-card-subtitle>Đã check-in</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <h2>{{ stats.presentToday || 0 }}</h2>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card orange-card">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>event_busy</mat-icon>
+                <mat-card-title>Nghỉ Phép</mat-card-title>
+                <mat-card-subtitle>Đã duyệt hôm nay</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <h2>{{ stats.onLeaveToday || 0 }}</h2>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="charts-section">
+        <!-- Thống kê đồ thị sau này -->
+        <mat-card class="chart-card">
+            <mat-card-header>
+                <mat-card-title>Hoạt Động Gần Đây</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="placeholder-text">Chưa có dữ liệu hoạt động</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

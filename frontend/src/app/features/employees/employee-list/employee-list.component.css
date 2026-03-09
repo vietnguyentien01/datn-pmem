@@ -1,0 +1,86 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-title p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.data-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0;
+}
+
+.table-actions {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-field {
+    width: 100%;
+    max-width: 400px;
+}
+
+.employee-table {
+    width: 100%;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary-color, #1A73E8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.action-column {
+    text-align: right;
+    padding-right: 24px !important;
+}
+
+tr.table-row:hover {
+    background-color: #f5f8ff;
+}
+
+.empty-table-cell {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-style: italic;
+}
+
+.dept-chip {
+    background-color: #e8f0fe !important;
+    color: #1a73e8 !important;
+    font-weight: 500;
+}

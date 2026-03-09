@@ -1,0 +1,226 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-title p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.filter-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 16px 24px;
+    margin-bottom: 8px;
+}
+
+.filter-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.month-select {
+    width: 250px;
+}
+
+.btn-download {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 24px;
+}
+
+.payslip-card {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 0;
+    overflow: hidden;
+    border-top: 6px solid #1A73E8;
+}
+
+.payslip-header {
+    padding: 32px 32px 16px;
+    text-align: center;
+    display: block;
+}
+
+.company-info h3 {
+    margin: 0 0 8px 0;
+    color: #1A73E8;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.company-info p {
+    margin: 0;
+    font-size: 18px;
+    color: #444;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.payslip-content {
+    padding: 0 32px 32px;
+}
+
+.employee-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 24px;
+    background-color: #f8fafe;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    border: 1px solid #e1e8f5;
+}
+
+.info-item {
+    display: flex;
+    font-size: 15px;
+}
+
+.info-item .label {
+    width: 120px;
+    color: #666;
+    font-weight: 500;
+}
+
+.info-item .value {
+    color: #222;
+    font-weight: 600;
+}
+
+.salary-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.salary-section h4 {
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eee;
+    font-size: 16px;
+    color: #333;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 15px;
+}
+
+.detail-row .desc {
+    color: #555;
+}
+
+.detail-row .amount {
+    font-weight: 500;
+    color: #222;
+}
+
+.detail-row.total-row {
+    margin-top: 8px;
+    border-bottom: none;
+    background-color: #f5f5f5;
+    padding: 12px 16px;
+    border-radius: 6px;
+}
+
+.detail-row.total-row .desc {
+    font-weight: 600;
+    color: #333;
+}
+
+.detail-row.total-row .amount {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.thu-nhap .total-row .amount {
+    color: #1A73E8;
+}
+
+.khau-tru .amount {
+    color: #e74c3c;
+}
+
+.net-salary-section {
+    text-align: center;
+    padding: 32px;
+    background: linear-gradient(135deg, #1A73E8 0%, #175ec2 100%);
+    color: white;
+    border-radius: 8px;
+}
+
+.net-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.net-amount {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.net-text {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.empty-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #dde3eb;
+    margin-bottom: 16px;
+}
+
+.empty-card h3 {
+    margin: 0 0 8px;
+    color: #555;
+}
+
+.empty-card p {
+    color: #888;
+    margin: 0;
+}

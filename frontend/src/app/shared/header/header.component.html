@@ -1,0 +1,30 @@
+<header class="header">
+    <div class="header-left">
+        <!-- Optional: Add toggle button for sidebar -->
+        <h2 class="page-title">Dashboard</h2>
+    </div>
+    <div class="header-right">
+        <div class="user-profile">
+            <div class="avatar">
+                {{ userInitial }}
+            </div>
+            <div class="user-info">
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-role">{{ userRole }}</span>
+            </div>
+            <button mat-icon-button [matMenuTriggerFor]="userMenu">
+                <mat-icon>expand_more</mat-icon>
+            </button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item routerLink="/employees/me">
+                    <mat-icon>person</mat-icon>
+                    <span>Hồ sơ của tôi</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span>Đăng xuất</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+</header>

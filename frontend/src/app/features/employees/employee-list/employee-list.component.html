@@ -1,0 +1,76 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Hồ Sơ Nhân Viên</h2>
+            <p>Quản lý thông tin chung toàn hệ thống</p>
+        </div>
+        <div class="header-actions">
+            <button mat-flat-button color="primary" routerLink="/employees/new">
+                <mat-icon>add</mat-icon>
+                Thêm nhân viên
+            </button>
+        </div>
+    </div>
+
+    <mat-card class="data-card">
+        <div class="table-actions">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-label>Tìm kiếm nhân viên...</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Nhập tên, email, SDT...">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 employee-table">
+
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef> Mã NV </th>
+                <td mat-cell *matCellDef="let element"> {{element.employeeCode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef> Họ và Tên </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="user-cell">
+                        <div class="user-avatar">{{element.fullName.charAt(0)}}</div>
+                        <span>{{element.fullName}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef> Phòng Ban </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-chip disabled class="dept-chip">{{element.department}}</mat-chip>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="action-column"> Thao tác </th>
+                <td mat-cell *matCellDef="let element" class="action-column">
+                    <button mat-icon-button color="primary" [routerLink]="['/employees', element.id]"
+                        matTooltip="Chi tiết">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteEmployee(element.id)" matTooltip="Xóa">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell empty-table-cell" colspan="5">Không tìm thấy dữ liệu.</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card>
+</div>

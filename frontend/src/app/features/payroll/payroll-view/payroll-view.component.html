@@ -1,0 +1,107 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Bảng Lương Cá Nhân</h2>
+            <p>Tra cứu thông tin chi tiết bảng lương hằng tháng</p>
+        </div>
+    </div>
+
+    <mat-card class="data-card filter-card">
+        <div class="filter-controls">
+            <mat-form-field appearance="outline" class="month-select">
+                <mat-label>Chọn tháng / năm</mat-label>
+                <mat-select [(value)]="selectedMonthStr" (selectionChange)="onMonthChange()">
+                    <mat-option *ngFor="let m of availableMonths" [value]="m.value">{{ m.label }}</mat-option>
+                </mat-select>
+                <mat-icon matPrefix>calendar_month</mat-icon>
+            </mat-form-field>
+
+            <button mat-stroked-button color="primary" class="btn-download">
+                <mat-icon>download</mat-icon> Tải PDF
+            </button>
+        </div>
+    </mat-card>
+
+    <mat-card class="payslip-card" *ngIf="currentPayslip; else noData">
+        <mat-card-header class="payslip-header">
+            <div class="company-info">
+                <h3>CÔNG TY TNHH ĐẤT VIỆT</h3>
+                <p>Phiếu Lương Tháng {{ currentPayslip.month }}/{{ currentPayslip.year }}</p>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content class="payslip-content">
+            <div class="employee-info">
+                <div class="info-item">
+                    <span class="label">Họ tên:</span>
+                    <span class="value">{{ currentPayslip.employeeName }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Mã NV:</span>
+                    <span class="value">{{ currentPayslip.employeeCode }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Phòng ban:</span>
+                    <span class="value">{{ currentPayslip.department }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Chức vụ:</span>
+                    <span class="value">{{ currentPayslip.position }}</span>
+                </div>
+            </div>
+
+            <div class="salary-details">
+                <div class="salary-section thu-nhap">
+                    <h4>Chi Tiết Thu Nhập</h4>
+                    <div class="detail-row">
+                        <span class="desc">Lương cơ bản</span>
+                        <span class="amount">{{ currentPayslip.baseSalary | number:'1.0-0' }} đ</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="desc">Phụ cấp / Thưởng</span>
+                        <span class="amount">{{ currentPayslip.bonus | number:'1.0-0' }} đ</span>
+                    </div>
+                    <div class="detail-row total-row">
+                        <span class="desc">Tổng thu nhập (A)</span>
+                        <span class="amount">{{ (currentPayslip.baseSalary + currentPayslip.bonus) | number:'1.0-0' }}
+                            đ</span>
+                    </div>
+                </div>
+
+                <div class="salary-section khau-tru">
+                    <h4>Chi Tiết Khấu Trừ</h4>
+                    <div class="detail-row">
+                        <span class="desc">BHXH, BHYT, BHTN (10.5%)</span>
+                        <span class="amount">-{{ currentPayslip.deductions | number:'1.0-0' }} đ</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="desc">Thuế TNCN</span>
+                        <span class="amount">-0 đ</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="desc">Tạm ứng / Khác</span>
+                        <span class="amount">-0 đ</span>
+                    </div>
+                    <div class="detail-row total-row">
+                        <span class="desc">Tổng khấu trừ (B)</span>
+                        <span class="amount">-{{ currentPayslip.deductions | number:'1.0-0' }} đ</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="net-salary-section">
+                <div class="net-title">Thực Lãnh (A - B)</div>
+                <div class="net-amount">{{ currentPayslip.netSalary | number:'1.0-0' }} VNĐ</div>
+                <div class="net-text">(Bằng chữ: <em>Mười tám triệu năm trăm chín mươi nghìn đồng chẵn</em>)</div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <ng-template #noData>
+        <mat-card class="empty-card">
+            <mat-icon class="empty-icon">description</mat-icon>
+            <h3>Chưa có bảng lương</h3>
+            <p>Không tìm thấy dữ liệu bảng lương cho tháng đã chọn.</p>
+        </mat-card>
+    </ng-template>
+</div>

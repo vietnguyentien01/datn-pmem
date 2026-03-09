@@ -1,0 +1,77 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <div class="back-nav" routerLink="/employees">
+                <mat-icon>arrow_back</mat-icon>
+                Quay lại danh sách
+            </div>
+            <h2>{{ isNew ? 'Thêm Mới Nhân Viên' : 'Chi Tiết Hồ Sơ' }}</h2>
+        </div>
+    </div>
+
+    <mat-card class="form-card">
+        <mat-card-content>
+            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="employee-form">
+
+                <div class="form-section">
+                    <h3>Thông tin cá nhân</h3>
+                    <div class="form-grid">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Họ và Tên</mat-label>
+                            <input matInput formControlName="fullName" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" formControlName="email" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Số Điện Thoại</mat-label>
+                            <input matInput formControlName="phone">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Thông tin công việc</h3>
+                    <div class="form-grid">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mã Nhân Viên</mat-label>
+                            <input matInput formControlName="employeeCode" required [readonly]="!isNew">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Phòng Ban</mat-label>
+                            <mat-select formControlName="department" required>
+                                <mat-option value="Ban Giám Đốc">Ban Giám Đốc</mat-option>
+                                <mat-option value="Phòng Kỹ Thuật">Phòng Kỹ Thuật</mat-option>
+                                <mat-option value="Phòng Nhân Sự">Phòng Nhân Sự</mat-option>
+                                <mat-option value="Phòng Kinh Doanh">Phòng Kinh Doanh</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Chức vụ</mat-label>
+                            <input matInput formControlName="position">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Mức lương cơ bản</mat-label>
+                            <input matInput type="number" formControlName="salary">
+                            <span matTextSuffix>VNĐ</span>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button mat-button type="button" routerLink="/employees">Hủy bỏ</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="employeeForm.invalid || isSaving">
+                        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                        <span *ngIf="!isSaving">{{ isNew ? 'Tạo mới' : 'Lưu thay đổi' }}</span>
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

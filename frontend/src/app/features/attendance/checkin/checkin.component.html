@@ -1,0 +1,41 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Check-in / Out</h2>
+            <p>Chấm công trực tuyến hằng ngày</p>
+        </div>
+    </div>
+
+    <div class="checkin-layout">
+        <mat-card class="time-card">
+            <div class="clock-display">
+                <h1>{{ currentTime | date:'HH:mm:ss' }}</h1>
+                <p>{{ currentTime | date:'EEEE, dd/MM/yyyy' }}</p>
+            </div>
+
+            <div class="status-indicator">
+                <div class="status-item">
+                    <mat-icon [ngClass]="{'active': hasCheckedIn}">login</mat-icon>
+                    <span>Giờ vào: <strong>{{ checkInTime || '--:--' }}</strong></span>
+                </div>
+                <div class="status-item">
+                    <mat-icon [ngClass]="{'active': hasCheckedOut}">logout</mat-icon>
+                    <span>Giờ ra: <strong>{{ checkOutTime || '--:--' }}</strong></span>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <button mat-flat-button class="btn-checkin" [disabled]="hasCheckedIn || isProcessing"
+                    (click)="onCheckIn()">
+                    <mat-icon>fingerprint</mat-icon>
+                    CHECK-IN
+                </button>
+                <button mat-flat-button class="btn-checkout" [disabled]="!hasCheckedIn || hasCheckedOut || isProcessing"
+                    (click)="onCheckOut()">
+                    <mat-icon>fingerprint</mat-icon>
+                    CHECK-OUT
+                </button>
+            </div>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,154 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-title p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.split-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.form-container {
+    flex: 3;
+}
+
+.history-container {
+    flex: 2;
+}
+
+.data-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+mat-card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 16px;
+}
+
+mat-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3E50;
+}
+
+.leave-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.date-row {
+    display: flex;
+    gap: 16px;
+}
+
+.half-width {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.history-card mat-card-content {
+    padding: 0;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-item {
+    padding: 16px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.history-date {
+    font-weight: 600;
+    color: #333;
+    display: block;
+}
+
+.history-type {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.history-reason {
+    font-size: 14px;
+    color: #555;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid #1A73E8;
+}
+
+.status-pending {
+    background-color: #fef0cd;
+    color: #f5b041;
+}
+
+.status-approved {
+    background-color: #d5f5e3;
+    color: #2ecc71;
+}
+
+.status-rejected {
+    background-color: #fadbd8;
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .split-layout {
+        flex-direction: column;
+    }
+
+    .form-container,
+    .history-container {
+        width: 100%;
+    }
+}
