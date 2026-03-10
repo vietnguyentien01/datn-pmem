@@ -8,13 +8,19 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   isManager: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     const user = this.authService.getCurrentUser();
-    if (user && (user.role === 'ADMIN' || user.role === 'MANAGER')) {
-      this.isManager = true;
+    if (user) {
+      if (user.role === 'ADMIN' || user.role === 'MANAGER') {
+        this.isManager = true;
+      }
+      if (user.role === 'ADMIN') {
+        this.isAdmin = true;
+      }
     }
   }
 }

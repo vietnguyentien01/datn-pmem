@@ -19,7 +19,8 @@ public class EmployeeService {
     private final PasswordEncoder passwordEncoder;
 
     public List<Employee> getAllEmployees(String keyword, Employee.EmployeeStatus status) {
-        return employeeRepository.findEmployeesByKeyword(keyword, status);
+        String searchKeyword = (keyword != null && !keyword.trim().isEmpty()) ? "%" + keyword.trim() + "%" : null;
+        return employeeRepository.findEmployeesByKeyword(searchKeyword, status);
     }
 
     public Employee getEmployeeById(Long id) {

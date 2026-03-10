@@ -16,10 +16,10 @@
                     <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()" class="leave-form">
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Loại nghỉ phép</mat-label>
-                            <mat-select formControlName="type" required>
-                                <mat-option value="Nghỉ phép năm (Paid Leave)">Nghỉ phép năm (Paid Leave)</mat-option>
-                                <mat-option value="Nghỉ ốm (Sick Leave)">Nghỉ ốm (Sick Leave)</mat-option>
-                                <mat-option value="Nghỉ không lương (Unpaid Leave)">Nghỉ không lương (Unpaid
+                            <mat-select formControlName="leaveType" required>
+                                <mat-option value="Nghỉ phép năm">Nghỉ phép năm (Paid Leave)</mat-option>
+                                <mat-option value="Nghỉ ốm">Nghỉ ốm (Sick Leave)</mat-option>
+                                <mat-option value="Nghỉ không lương">Nghỉ không lương (Unpaid
                                     Leave)</mat-option>
                                 <mat-option value="Khác">Khác</mat-option>
                             </mat-select>
@@ -72,7 +72,7 @@
                                 <div>
                                     <span class="history-date">{{ item.startDate | date:'dd/MM/yyyy' }} - {{
                                         item.endDate | date:'dd/MM/yyyy' }}</span>
-                                    <div class="history-type">{{ item.type }}</div>
+                                    <div class="history-type">{{ item.leaveType }}</div>
                                 </div>
                                 <mat-chip
                                     [ngClass]="{'status-pending': item.status === 'PENDING', 'status-approved': item.status === 'APPROVED', 'status-rejected': item.status === 'REJECTED'}">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EmployeeService, Employee } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-employee-detail',
@@ -18,12 +19,13 @@ export class EmployeeDetailComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.paramMap.get('id');
-    this.isNew = this.employeeId === 'new';
+    this.isNew = !this.employeeId || this.employeeId === 'new';
 
     this.employeeForm = this.fb.group({
       employeeCode: ['', Validators.required],
@@ -35,35 +37,72 @@ export class EmployeeDetailComponent implements OnInit {
       salary: [0]
     });
 
-    if (!this.isNew) {
+    if (!this.isNew && this.employeeId) {
       this.loadEmployeeData();
     }
   }
 
   loadEmployeeData() {
-    // Gọi API lấy data nhân viên
-    // Dummy temp implementation
-    if (this.employeeId === '1') {
-      this.employeeForm.patchValue({
-        employeeCode: 'NV001',
-        fullName: 'Nguyễn Văn Admin',
-        email: 'admin@pmem.vn',
-        department: 'Ban Giám Đốc',
-        position: 'Giám đốc',
-        salary: 50000000
-      });
-    }
+    const id = Number(this.employeeId);
+    if (isNaN(id)) return;
+
+    this.employeeService.getById(id).subscribe({
+      next: (data) => {
+        this.employeeForm.patchValue({
+          employeeCode: data.employeeCode,
+          fullName: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          department: data.department,
+          position: data.position,
+          salary: data.baseSalary
+        });
+      },
+      error: (err) => console.error('Lỗi lấy thông tin', err)
+    });
   }
 
   onSubmit() {
     if (this.employeeForm.valid) {
       this.isSaving = true;
-      // Gọi API lưu hoặc cập nhật hồ sơ
-      setTimeout(() => {
-        this.snackBar.open(this.isNew ? 'Thêm nhân viên thành công' : 'Cập nhật thành công', 'Đóng', { duration: 3000 });
-        this.isSaving = false;
-        this.router.navigate(['/employees']);
-      }, 800);
+      const empData: Employee = {
+        employeeCode: this.employeeForm.value.employeeCode,
+        fullName: this.employeeForm.value.fullName,
+        email: this.employeeForm.value.email,
+        phone: this.employeeForm.value.phone,
+        department: this.employeeForm.value.department,
+        position: this.employeeForm.value.position,
+        baseSalary: this.employeeForm.value.salary,
+        status: 'ACTIVE'
+      };
+
+      if (this.isNew) {
+        this.employeeService.create(empData).subscribe({
+          next: () => {
+            this.snackBar.open('Thêm nhân viên thành công', 'Đóng', { duration: 3000 });
+            this.isSaving = false;
+            this.router.navigate(['/employees']);
+          },
+          error: (err) => {
+            console.error(err);
+            this.snackBar.open('Lỗi thêm nhân viên', 'Đóng', { duration: 3000 });
+            this.isSaving = false;
+          }
+        });
+      } else {
+        this.employeeService.update(Number(this.employeeId), empData).subscribe({
+          next: () => {
+            this.snackBar.open('Cập nhật thành công', 'Đóng', { duration: 3000 });
+            this.isSaving = false;
+            this.router.navigate(['/employees']);
+          },
+          error: (err) => {
+            console.error(err);
+            this.snackBar.open('Lỗi cập nhật', 'Đóng', { duration: 3000 });
+            this.isSaving = false;
+          }
+        });
+      }
     }
   }
 }

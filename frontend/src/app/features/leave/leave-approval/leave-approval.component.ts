@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { AuthService } from '../../../core/services/auth.service';
 import { LeaveService, LeaveRequest } from '../../../core/services/leave.service';
 
 @Component({
@@ -14,13 +15,19 @@ export class LeaveApprovalComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveRequest>([]);
   statusFilter = 'PENDING';
 
-  // Use a hardcoded managerId for simplicity in this demo,
-  // normally this comes from AuthService/LocalStorage
-  currentManagerId = 2; // Manager's ID
+  currentManagerId: number | null = null;
 
-  constructor(private snackBar: MatSnackBar, private leaveService: LeaveService) { }
+  constructor(
+    private snackBar: MatSnackBar,
+    private leaveService: LeaveService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    if (user && user.employeeId) {
+      this.currentManagerId = user.employeeId;
+    }
     this.filterData();
   }
 
@@ -40,6 +47,11 @@ export class LeaveApprovalComponent implements OnInit {
       const reason = prompt('Nhập lý do từ chối:');
       if (reason === null) return; // User cancelled
       rejectReason = reason;
+    }
+
+    if (!this.currentManagerId) {
+      this.snackBar.open('Không tìm thấy thông tin Quản lý', 'Đóng', { duration: 3000 });
+      return;
     }
 
     this.leaveService.approve(id, this.currentManagerId, status === 'APPROVED', rejectReason).subscribe({
