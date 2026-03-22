@@ -17,7 +17,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
         List<Attendance> findByEmployeeIdAndDateBetweenOrderByDateDesc(Long employeeId, LocalDate start, LocalDate end);
 
-        @Query("SELECT COUNT(DISTINCT a.employee.id) FROM Attendance a WHERE a.date = :date AND a.status = 'PRESENT'")
+        @Query("SELECT COUNT(DISTINCT a.employee.id) FROM Attendance a WHERE a.date = :date AND a.status IN ('PRESENT', 'LATE_EARLY')")
         long countPresentToday(@Param("date") LocalDate date);
 
         @Query("SELECT COUNT(DISTINCT a.employee.id) FROM Attendance a WHERE a.date = :date AND a.status = 'LATE'")
