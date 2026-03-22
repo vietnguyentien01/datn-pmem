@@ -66,7 +66,7 @@
                         <mat-icon>visibility</mat-icon>
                     </button>
                     <button mat-icon-button color="accent" (click)="openSalaryChangeDialog(element)"
-                        matTooltip="Đề xuất đổi lương">
+                        matTooltip="Đề xuất đổi lương" *ngIf="!isAdmin">
                         <mat-icon>monetization_on</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteEmployee(element.id)" matTooltip="Xóa">

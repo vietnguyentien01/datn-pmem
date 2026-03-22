@@ -72,7 +72,7 @@ export class PayrollAdminComponent implements OnInit {
       workingDays: 26,
       actualDays: 26,
       bonus: 0,
-      deductions: 0
+      deductions: (employee.baseSalary || 0) * 0.105
     };
 
     this.payrollService.createOrUpdatePayroll(employee.id!, defaultPayroll).subscribe({
@@ -102,7 +102,7 @@ export class PayrollAdminComponent implements OnInit {
         workingDays: 26,
         actualDays: 26,
         bonus: 0,
-        deductions: 0
+        deductions: (emp.baseSalary || 0) * 0.105
       };
 
       this.payrollService.createOrUpdatePayroll(emp.id!, defaultPayroll).subscribe({

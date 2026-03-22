@@ -71,10 +71,21 @@
                                 <input matInput formControlName="position">
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline">
+                            <mat-form-field appearance="outline" *ngIf="isAdmin && !isMe">
                                 <mat-label>Mức lương cơ bản</mat-label>
                                 <input matInput type="number" formControlName="salary">
                                 <span matTextSuffix>VNĐ</span>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" *ngIf="isNew">
+                                <mat-label>Mật khẩu khởi tạo</mat-label>
+                                <input matInput type="password" formControlName="password" required>
+                                <mat-error *ngIf="employeeForm.get('password')?.hasError('required')">
+                                    Vui lòng nhập mật khẩu
+                                </mat-error>
+                                <mat-error *ngIf="employeeForm.get('password')?.hasError('minlength')">
+                                    Mật khẩu phải từ 6 ký tự
+                                </mat-error>
                             </mat-form-field>
                         </div>
                     </div>

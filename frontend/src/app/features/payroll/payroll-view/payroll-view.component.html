@@ -46,6 +46,11 @@
                     <span class="label">Chức vụ:</span>
                     <span class="value">{{ employee.position }}</span>
                 </div>
+                <div class="info-item">
+                    <span class="label">Lương cơ bản hiện tại:</span>
+                    <span class="value" style="color: #2e7d32; font-weight: bold;">{{ employee.baseSalary |
+                        number:'1.0-0' }} đ</span>
+                </div>
             </div>
 
             <div class="salary-details">
@@ -53,7 +58,7 @@
                     <h4>Chi Tiết Thu Nhập</h4>
                     <div class="detail-row">
                         <span class="desc">Lương cơ bản</span>
-                        <span class="amount">{{ currentPayroll.baseSalary | number:'1.0-0' }} đ</span>
+                        <span class="amount">{{ employee.baseSalary | number:'1.0-0' }} đ</span>
                     </div>
                     <div class="detail-row">
                         <span class="desc">Ngày công chuẩn / Ngày công thực tế</span>
@@ -66,8 +71,7 @@
                     </div>
                     <div class="detail-row total-row">
                         <span class="desc">Tổng thu nhập (A)</span>
-                        <span class="amount">{{ ((currentPayroll.baseSalary || 0) + (currentPayroll.bonus || 0)) |
-                            number:'1.0-0' }} đ</span>
+                        <span class="amount">{{ calculatedTotalIncome | number:'1.0-0' }} đ</span>
                     </div>
                 </div>
 
@@ -75,18 +79,18 @@
                     <h4>Chi Tiết Khấu Trừ</h4>
                     <div class="detail-row">
                         <span class="desc">BHXH, BHYT, BHTN (10.5%)</span>
-                        <span class="amount">-{{ (currentPayroll.deductions || 0) | number:'1.0-0' }} đ</span>
+                        <span class="amount">-{{ calculatedDeductions | number:'1.0-0' }} đ</span>
                     </div>
                     <div class="detail-row total-row">
                         <span class="desc">Tổng khấu trừ (B)</span>
-                        <span class="amount">-{{ (currentPayroll.deductions || 0) | number:'1.0-0' }} đ</span>
+                        <span class="amount">-{{ calculatedDeductions | number:'1.0-0' }} đ</span>
                     </div>
                 </div>
             </div>
 
             <div class="net-salary-section">
                 <div class="net-title">Thực Lãnh (A - B)</div>
-                <div class="net-amount">{{ (currentPayroll.netSalary || 0) | number:'1.0-0' }} VNĐ</div>
+                <div class="net-amount">{{ calculatedNetSalary | number:'1.0-0' }} VNĐ</div>
             </div>
 
             <div class="payslip-note" *ngIf="currentPayroll.note">

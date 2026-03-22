@@ -50,4 +50,23 @@ export class PayrollViewComponent implements OnInit {
   onMonthChange() {
     this.currentPayroll = this.payrolls[this.selectedIndex] || null;
   }
+
+  get calculatedTotalIncome(): number {
+    if (!this.employee || !this.currentPayroll) return 0;
+    const base = this.employee.baseSalary || 0;
+    const workingDays = this.currentPayroll.workingDays || 26;
+    const actualDays = this.currentPayroll.actualDays || workingDays;
+    const bonus = this.currentPayroll.bonus || 0;
+    return (base / workingDays * actualDays) + bonus;
+  }
+
+  get calculatedDeductions(): number {
+    if (!this.employee) return 0;
+    const base = this.employee.baseSalary || 0;
+    return base * 0.105;
+  }
+
+  get calculatedNetSalary(): number {
+    return this.calculatedTotalIncome - this.calculatedDeductions;
+  }
 }

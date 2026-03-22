@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeService, Employee } from '../../../core/services/employee.service';
 import { SalaryChangeDialogComponent } from '../salary-change-dialog/salary-change-dialog.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -13,6 +14,7 @@ import { SalaryChangeDialogComponent } from '../salary-change-dialog/salary-chan
 export class EmployeeListComponent implements OnInit {
   displayedColumns: string[] = ['employeeCode', 'fullName', 'email', 'department', 'actions'];
   dataSource = new MatTableDataSource<Employee>([]);
+  isAdmin = false;
 
   departments: string[] = [];
   selectedDepartment = '';
@@ -22,10 +24,15 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    if (user && user.role === 'ADMIN') {
+      this.isAdmin = true;
+    }
     this.loadDepartments();
     this.loadEmployees();
   }

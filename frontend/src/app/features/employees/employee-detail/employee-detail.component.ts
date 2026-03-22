@@ -17,6 +17,8 @@ export class EmployeeDetailComponent implements OnInit {
   isSaving = false;
   activeTab = 0;
   isMe = false;
+  isAdmin = false;
+  isHR = false;
 
   // Certifications
   certifications: Certification[] = [];
@@ -50,6 +52,14 @@ export class EmployeeDetailComponent implements OnInit {
       }
     }
 
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser && currentUser.role === 'ADMIN') {
+      this.isAdmin = true;
+    }
+    if (currentUser && currentUser.role === 'HR') {
+      this.isHR = true;
+    }
+
     this.isNew = !this.employeeId || this.employeeId === 'new';
     const codeValue = this.isNew ? 'Hệ thống tự sinh' : '';
 
@@ -60,7 +70,8 @@ export class EmployeeDetailComponent implements OnInit {
       phone: [''],
       department: ['', Validators.required],
       position: [''],
-      salary: [0]
+      salary: [0],
+      password: ['', this.isNew ? [Validators.required, Validators.minLength(6)] : []]
     });
 
     if (!this.isNew && this.employeeId) {
@@ -110,7 +121,8 @@ export class EmployeeDetailComponent implements OnInit {
       };
 
       if (this.isNew) {
-        this.employeeService.create(empData).subscribe({
+        const pwd = this.employeeForm.value.password;
+        this.employeeService.create(empData, pwd).subscribe({
           next: () => {
             this.snackBar.open('Thêm nhân viên thành công', 'Đóng', { duration: 3000 });
             this.isSaving = false;

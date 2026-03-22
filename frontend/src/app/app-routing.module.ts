@@ -26,7 +26,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'leave/request', component: LeaveRequestComponent },
-      { path: 'leave/approval', component: LeaveApprovalComponent, data: { roles: ['ADMIN', 'MANAGER', 'HR'] } },
+      { path: 'leave/approval', component: LeaveApprovalComponent, data: { roles: ['MANAGER', 'HR'] } },
       { path: 'employees', component: EmployeeListComponent, data: { roles: ['ADMIN'] } },
       { path: 'employees/me', component: EmployeeDetailComponent },
       { path: 'employees/:id', component: EmployeeDetailComponent, data: { roles: ['ADMIN'] } },
