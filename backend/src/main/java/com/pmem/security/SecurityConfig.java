@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,9 +42,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/auth/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/auth/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/error")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("**/auth/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher(org.springframework.http.HttpMethod.POST,
+                                "/auth/login"))
+                        .permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher(org.springframework.http.HttpMethod.POST,
+                                "/api/auth/login"))
+                        .permitAll()
+                        .requestMatchers(org.springframework.security.web.util.matcher.AntPathRequestMatcher
+                                .antMatcher(org.springframework.http.HttpMethod.OPTIONS, "/**"))
+                        .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -56,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

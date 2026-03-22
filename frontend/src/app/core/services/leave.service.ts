@@ -30,11 +30,12 @@ export class LeaveService {
         return this.http.get<LeaveRequest[]>(`${this.api}/pending`);
     }
 
-    getAll(status?: string, startDate?: string, endDate?: string): Observable<LeaveRequest[]> {
+    getAll(status?: string, startDate?: string, endDate?: string, department?: string): Observable<LeaveRequest[]> {
         let params = new URLSearchParams();
         if (status) params.append('status', status);
         if (startDate) params.append('startDate', startDate);
         if (endDate) params.append('endDate', endDate);
+        if (department) params.append('department', department);
         const query = params.toString() ? `?${params.toString()}` : '';
         return this.http.get<LeaveRequest[]>(`${this.api}/all${query}`);
     }

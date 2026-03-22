@@ -1,0 +1,109 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Quản Lý Bảng Lương</h2>
+            <p>Tính lương và chốt lương hàng tháng cho hệ thống nhân sự</p>
+        </div>
+        <div class="header-actions">
+            <button mat-flat-button color="primary" class="add-btn" (click)="generateAll()">
+                <mat-icon>calculate</mat-icon> Tính lương toàn bộ
+            </button>
+        </div>
+    </div>
+
+    <mat-card class="data-card filter-card">
+        <div class="filter-controls">
+            <mat-form-field appearance="outline" class="month-select">
+                <mat-label>Tháng</mat-label>
+                <mat-select [(value)]="selectedMonth" (selectionChange)="onPeriodChange()">
+                    <mat-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">
+                        Tháng {{ m }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="year-select">
+                <mat-label>Năm</mat-label>
+                <input matInput type="number" [(ngModel)]="selectedYear" (change)="onPeriodChange()">
+            </mat-form-field>
+        </div>
+    </mat-card>
+
+    <mat-card class="data-card">
+        <div class="loading-overlay" *ngIf="isLoading">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <table mat-table [dataSource]="employees" class="mat-elevation-z0 request-table" *ngIf="!isLoading">
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef> Mã NV </th>
+                <td mat-cell *matCellDef="let emp"> {{emp.employeeCode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
+                <td mat-cell *matCellDef="let emp">
+                    <div class="user-cell">
+                        <div class="user-avatar">{{emp.fullName.charAt(0)}}</div>
+                        <span class="name">{{emp.fullName}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef> Phòng ban </th>
+                <td mat-cell *matCellDef="let emp"> {{emp.department}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month">
+                <th mat-header-cell *matHeaderCellDef> Kỳ lương </th>
+                <td mat-cell *matCellDef="let emp">
+                    T{{ selectedMonth }}/{{ selectedYear }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="netSalary">
+                <th mat-header-cell *matHeaderCellDef> Thực lĩnh </th>
+                <td mat-cell *matCellDef="let emp">
+                    <ng-container *ngIf="getEmployeePayroll(emp.id) as payroll; else noSalary">
+                        <strong>{{ (payroll.netSalary || 0) | number:'1.0-0' }} đ</strong>
+                    </ng-container>
+                    <ng-template #noSalary>
+                        <span class="text-muted">---</span>
+                    </ng-template>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
+                <td mat-cell *matCellDef="let emp">
+                    <mat-chip [ngClass]="getEmployeePayroll(emp.id) ? 'status-approved' : 'status-pending'">
+                        {{ getEmployeePayroll(emp.id) ? 'Đã tính lương' : 'Chờ tính lương' }}
+                    </mat-chip>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="action-column"> Thao tác </th>
+                <td mat-cell *matCellDef="let emp" class="action-column">
+                    <button *ngIf="!getEmployeePayroll(emp.id)" mat-icon-button class="btn-approve"
+                        (click)="generatePayroll(emp)" matTooltip="Tính lương ngay">
+                        <mat-icon>add_circle_outline</mat-icon>
+                    </button>
+                    <!-- Nút Đề Xuất Đổi Lương Mới Cho HR -->
+                    <button mat-icon-button color="accent" (click)="openSalaryChangeDialog(emp)"
+                        matTooltip="Đề xuất đổi mức lương">
+                        <mat-icon>monetization_on</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell empty-table-cell" colspan="7">Không có dữ liệu nhân viên.</td>
+            </tr>
+        </table>
+    </mat-card>
+</div>

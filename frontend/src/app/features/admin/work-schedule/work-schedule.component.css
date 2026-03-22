@@ -1,0 +1,46 @@
+.settings-card {
+    max-width: 700px;
+}
+
+.settings-form {
+    padding: 8px;
+}
+
+.form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.form-row mat-form-field {
+    flex: 1;
+}
+
+.info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(var(--primary-rgb, 25, 118, 210), 0.08);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0 24px;
+    font-size: 14px;
+    color: #555;
+}
+
+.info-box mat-icon {
+    color: var(--primary-color, #1976d2);
+    margin-top: 2px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-actions button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 24px;
+}

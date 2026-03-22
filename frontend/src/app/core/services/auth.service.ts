@@ -53,6 +53,11 @@ export class AuthService {
         return role === 'ADMIN' || role === 'MANAGER';
     }
 
+    isHR(): boolean {
+        const role = this.getCurrentUser()?.role;
+        return role === 'ADMIN' || role === 'HR';
+    }
+
     private getStoredUser(): LoginResponse | null {
         const u = localStorage.getItem('user');
         return u ? JSON.parse(u) : null;

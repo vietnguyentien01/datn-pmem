@@ -11,67 +11,197 @@
 
     <mat-card class="form-card">
         <mat-card-content>
-            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="employee-form">
+            <div class="tab-navigation" *ngIf="!isNew">
+                <button mat-button [class.active]="activeTab === 0" (click)="activeTab = 0">
+                    <mat-icon>person</mat-icon> Thông tin cá nhân
+                </button>
+                <button mat-button [class.active]="activeTab === 1" (click)="activeTab = 1">
+                    <mat-icon>school</mat-icon> Bằng cấp / Chứng chỉ
+                </button>
+                <button mat-button [class.active]="activeTab === 2" (click)="activeTab = 2">
+                    <mat-icon>work_history</mat-icon> Lịch sử công tác
+                </button>
+            </div>
 
-                <div class="form-section">
-                    <h3>Thông tin cá nhân</h3>
-                    <div class="form-grid">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Họ và Tên</mat-label>
-                            <input matInput formControlName="fullName" required>
-                        </mat-form-field>
+            <!-- Tab 0: Thông tin cá nhân -->
+            <div *ngIf="activeTab === 0 || isNew">
+                <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="employee-form">
+                    <div class="form-section">
+                        <h3>Thông tin cá nhân</h3>
+                        <div class="form-grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Họ và Tên</mat-label>
+                                <input matInput formControlName="fullName" required>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>Email</mat-label>
-                            <input matInput type="email" formControlName="email" required>
-                        </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Email</mat-label>
+                                <input matInput type="email" formControlName="email" required>
+                            </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>Số Điện Thoại</mat-label>
-                            <input matInput formControlName="phone">
-                        </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>Số Điện Thoại</mat-label>
+                                <input matInput formControlName="phone">
+                            </mat-form-field>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-section">
-                    <h3>Thông tin công việc</h3>
+                    <div class="form-section">
+                        <h3>Thông tin công việc</h3>
+                        <div class="form-grid">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Mã Nhân Viên</mat-label>
+                                <input matInput formControlName="employeeCode" readonly>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Phòng Ban</mat-label>
+                                <mat-select formControlName="department" required>
+                                    <mat-option value="Ban Giám Đốc">Ban Giám Đốc</mat-option>
+                                    <mat-option value="Nhân Sự">Nhân Sự</mat-option>
+                                    <mat-option value="Công Nghệ Thông Tin">Công Nghệ Thông Tin</mat-option>
+                                    <mat-option value="Kế Toán">Kế Toán</mat-option>
+                                    <mat-option value="Kinh Doanh">Kinh Doanh</mat-option>
+                                    <mat-option value="Marketing">Marketing</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Chức vụ</mat-label>
+                                <input matInput formControlName="position">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Mức lương cơ bản</mat-label>
+                                <input matInput type="number" formControlName="salary">
+                                <span matTextSuffix>VNĐ</span>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button mat-button type="button" routerLink="/employees">Hủy bỏ</button>
+                        <button mat-flat-button color="primary" type="submit"
+                            [disabled]="employeeForm.invalid || isSaving">
+                            <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
+                            <span *ngIf="!isSaving">{{ isNew ? 'Tạo mới' : 'Lưu thay đổi' }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 1: Bằng cấp / Chứng chỉ -->
+            <div *ngIf="activeTab === 1 && !isNew" class="tab-content">
+                <h3>Bằng cấp / Chứng chỉ</h3>
+
+                <div class="add-form">
                     <div class="form-grid">
                         <mat-form-field appearance="outline">
-                            <mat-label>Mã Nhân Viên</mat-label>
-                            <input matInput formControlName="employeeCode" required [readonly]="!isNew">
+                            <mat-label>Tên bằng cấp/chứng chỉ</mat-label>
+                            <input matInput [(ngModel)]="newCert.name" placeholder="VD: Cử nhân CNTT">
                         </mat-form-field>
-
                         <mat-form-field appearance="outline">
-                            <mat-label>Phòng Ban</mat-label>
-                            <mat-select formControlName="department" required>
-                                <mat-option value="Ban Giám Đốc">Ban Giám Đốc</mat-option>
-                                <mat-option value="Phòng Kỹ Thuật">Phòng Kỹ Thuật</mat-option>
-                                <mat-option value="Phòng Nhân Sự">Phòng Nhân Sự</mat-option>
-                                <mat-option value="Phòng Kinh Doanh">Phòng Kinh Doanh</mat-option>
+                            <mat-label>Nơi cấp</mat-label>
+                            <input matInput [(ngModel)]="newCert.issuedBy" placeholder="VD: ĐH Bách Khoa">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Loại</mat-label>
+                            <mat-select [(ngModel)]="newCert.certType">
+                                <mat-option value="DEGREE">Bằng cấp</mat-option>
+                                <mat-option value="CERTIFICATE">Chứng chỉ</mat-option>
                             </mat-select>
                         </mat-form-field>
-
                         <mat-form-field appearance="outline">
-                            <mat-label>Chức vụ</mat-label>
-                            <input matInput formControlName="position">
+                            <mat-label>Ngày cấp</mat-label>
+                            <input matInput type="date" [(ngModel)]="newCert.issueDate">
                         </mat-form-field>
-
                         <mat-form-field appearance="outline">
-                            <mat-label>Mức lương cơ bản</mat-label>
-                            <input matInput type="number" formControlName="salary">
-                            <span matTextSuffix>VNĐ</span>
+                            <mat-label>Ngày hết hạn</mat-label>
+                            <input matInput type="date" [(ngModel)]="newCert.expiryDate">
                         </mat-form-field>
                     </div>
-                </div>
-
-                <div class="form-actions">
-                    <button mat-button type="button" routerLink="/employees">Hủy bỏ</button>
-                    <button mat-flat-button color="primary" type="submit" [disabled]="employeeForm.invalid || isSaving">
-                        <mat-spinner diameter="20" *ngIf="isSaving"></mat-spinner>
-                        <span *ngIf="!isSaving">{{ isNew ? 'Tạo mới' : 'Lưu thay đổi' }}</span>
+                    <button mat-flat-button color="primary" (click)="addCertification()" [disabled]="!newCert.name">
+                        <mat-icon>add</mat-icon> Thêm
                     </button>
                 </div>
-            </form>
+
+                <div class="items-list" *ngIf="certifications.length > 0">
+                    <div class="item-card" *ngFor="let cert of certifications">
+                        <div class="item-info">
+                            <div class="item-title">
+                                <mat-icon>{{ cert.certType === 'DEGREE' ? 'school' : 'workspace_premium' }}</mat-icon>
+                                <strong>{{ cert.name }}</strong>
+                                <mat-chip disabled class="type-chip">{{ cert.certType === 'DEGREE' ? 'Bằng cấp' :
+                                    'Chứng chỉ' }}</mat-chip>
+                            </div>
+                            <div class="item-meta">
+                                <span *ngIf="cert.issuedBy">Nơi cấp: {{ cert.issuedBy }}</span>
+                                <span *ngIf="cert.issueDate"> | Ngày cấp: {{ cert.issueDate }}</span>
+                                <span *ngIf="cert.expiryDate"> | Hết hạn: {{ cert.expiryDate }}</span>
+                            </div>
+                        </div>
+                        <button mat-icon-button color="warn" (click)="deleteCertification(cert.id!)" matTooltip="Xóa">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <p class="empty-text" *ngIf="certifications.length === 0">Chưa có bằng cấp/chứng chỉ nào.</p>
+            </div>
+
+            <!-- Tab 2: Lịch sử công tác -->
+            <div *ngIf="activeTab === 2 && !isNew" class="tab-content">
+                <h3>Lịch Sử Công Tác</h3>
+
+                <div class="add-form">
+                    <div class="form-grid">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tên công ty</mat-label>
+                            <input matInput [(ngModel)]="newHistory.companyName">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Chức vụ</mat-label>
+                            <input matInput [(ngModel)]="newHistory.position">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Từ ngày</mat-label>
+                            <input matInput type="date" [(ngModel)]="newHistory.startDate">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Đến ngày</mat-label>
+                            <input matInput type="date" [(ngModel)]="newHistory.endDate">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Mô tả</mat-label>
+                            <input matInput [(ngModel)]="newHistory.description">
+                        </mat-form-field>
+                    </div>
+                    <button mat-flat-button color="primary" (click)="addWorkHistory()"
+                        [disabled]="!newHistory.companyName">
+                        <mat-icon>add</mat-icon> Thêm
+                    </button>
+                </div>
+
+                <div class="items-list" *ngIf="workHistories.length > 0">
+                    <div class="item-card" *ngFor="let h of workHistories">
+                        <div class="item-info">
+                            <div class="item-title">
+                                <mat-icon>business</mat-icon>
+                                <strong>{{ h.companyName }}</strong>
+                                <span class="position-text">— {{ h.position }}</span>
+                            </div>
+                            <div class="item-meta">
+                                <span>{{ h.startDate }} → {{ h.endDate || 'Hiện tại' }}</span>
+                                <span *ngIf="h.description"> | {{ h.description }}</span>
+                            </div>
+                        </div>
+                        <button mat-icon-button color="warn" (click)="deleteWorkHistory(h.id!)" matTooltip="Xóa">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <p class="empty-text" *ngIf="workHistories.length === 0">Chưa có lịch sử công tác nào.</p>
+            </div>
+
         </mat-card-content>
     </mat-card>
 </div>

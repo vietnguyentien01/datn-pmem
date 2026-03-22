@@ -1,22 +1,57 @@
 <div class="page-container">
     <div class="page-header">
         <div class="header-title">
-            <h2>Lịch Sử Chấm Công</h2>
-            <p>Theo dõi thời gian vào/ra hằng ngày của bạn</p>
+            <h2>Quản Lý Chấm Công</h2>
+            <p *ngIf="isAdmin || isManager">Quản lý chấm công theo phòng ban, mã nhân viên và khoảng thời gian</p>
+            <p *ngIf="!isAdmin && !isManager">Theo dõi thời gian vào/ra hằng ngày của bạn</p>
         </div>
     </div>
 
     <mat-card class="data-card filter-card">
         <div class="filter-controls">
-            <mat-form-field appearance="outline" class="month-select">
-                <mat-label>Chọn tháng / năm</mat-label>
-                <input matInput type="month" [(ngModel)]="selectedMonth" (change)="loadAttendanceData()">
+            <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" subscriptSizing="dynamic">
+                <mat-label>Phòng ban</mat-label>
+                <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="loadAttendanceData()">
+                    <mat-option value="">Tất cả phòng ban</mat-option>
+                    <mat-option *ngFor="let dept of departments" [value]="dept">{{dept}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" *ngIf="isAdmin || isManager" subscriptSizing="dynamic">
+                <mat-label>Mã nhân viên</mat-label>
+                <input matInput [(ngModel)]="searchEmployeeCode" (keyup.enter)="loadAttendanceData()"
+                    placeholder="VD: NV001">
+                <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Từ ngày</mat-label>
+                <input matInput type="date" [(ngModel)]="startDate" (change)="loadAttendanceData()">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Đến ngày</mat-label>
+                <input matInput type="date" [(ngModel)]="endDate" (change)="loadAttendanceData()">
             </mat-form-field>
         </div>
     </mat-card>
 
     <mat-card class="data-card">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 attendance-table">
+
+            <!-- Employee Info Column (admin/manager only) -->
+            <ng-container matColumnDef="employeeInfo">
+                <th mat-header-cell *matHeaderCellDef> Nhân viên </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="user-cell" *ngIf="element.employee">
+                        <div class="user-avatar">{{element.employee.fullName?.charAt(0) || '?'}}</div>
+                        <div class="user-info">
+                            <span class="user-name">{{element.employee.fullName}}</span>
+                            <span class="user-code">{{element.employee.employeeCode}}</span>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
 
             <!-- Date Column -->
             <ng-container matColumnDef="date">
@@ -31,7 +66,7 @@
 
             <!-- CheckIn Column -->
             <ng-container matColumnDef="checkIn">
-                <th mat-header-cell *matHeaderCellDef> Giờ vào (Check-in) </th>
+                <th mat-header-cell *matHeaderCellDef> Giờ vào </th>
                 <td mat-cell *matCellDef="let element">
                     <span class="time-badge in" *ngIf="element.checkIn">{{element.checkIn}}</span>
                     <span class="missing-badge" *ngIf="!element.checkIn">--:--</span>
@@ -40,7 +75,7 @@
 
             <!-- CheckOut Column -->
             <ng-container matColumnDef="checkOut">
-                <th mat-header-cell *matHeaderCellDef> Giờ ra (Check-out) </th>
+                <th mat-header-cell *matHeaderCellDef> Giờ ra </th>
                 <td mat-cell *matCellDef="let element">
                     <span class="time-badge out" *ngIf="element.checkOut">{{element.checkOut}}</span>
                     <span class="missing-badge" *ngIf="!element.checkOut">--:--</span>
@@ -52,22 +87,78 @@
                 <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
                 <td mat-cell *matCellDef="let element">
                     <mat-chip [ngClass]="{
-            'status-present': element.status === 'Hợp lệ', 
-            'status-late': element.status === 'Đi trễ / Về sớm', 
-            'status-absent': element.status === 'Vắng mặt'
-          }">
-                        {{ element.status }}
+                        'status-present': element.status === 'PRESENT',
+                        'status-late': element.status === 'LATE',
+                        'status-absent': element.status === 'ABSENT',
+                        'status-leave': element.status === 'ON_LEAVE',
+                        'status-late-early': element.status === 'LATE_EARLY' || element.status === 'HALF_DAY'
+                    }">
+                        {{ element.status === 'PRESENT' ? 'Đúng giờ' :
+                        element.status === 'LATE' ? 'Đi trễ' :
+                        element.status === 'ABSENT' ? 'Vắng mặt' :
+                        element.status === 'ON_LEAVE' ? 'Nghỉ phép' :
+                        (element.status === 'LATE_EARLY' || element.status === 'HALF_DAY') ? 'Đi muộn về sớm' :
+                        element.status }}
                     </mat-chip>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column (admin only) -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="action-column"> Thao tác </th>
+                <td mat-cell *matCellDef="let element" class="action-column">
+                    <button mat-icon-button color="primary" (click)="startEdit(element)" matTooltip="Chỉnh sửa giờ"
+                        *ngIf="isAdmin">
+                        <mat-icon>edit</mat-icon>
+                    </button>
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
 
-            <!-- Row shown when there is no matching data. -->
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell empty-table-cell" colspan="4">Không có dữ liệu chấm công cho tháng này.</td>
+                <td class="mat-cell empty-table-cell" [attr.colspan]="displayedColumns.length">Không có dữ liệu chấm
+                    công cho khoảng thời gian này.</td>
             </tr>
         </table>
     </mat-card>
+
+    <!-- Edit Dialog (overlay) -->
+    <div class="edit-overlay" *ngIf="editingRecord">
+        <mat-card class="edit-dialog">
+            <h3>Chỉnh sửa chấm công</h3>
+            <p class="edit-subtitle" *ngIf="editingRecord.employee">
+                {{editingRecord.employee?.fullName}} - {{editingRecord.date | date:'dd/MM/yyyy'}}
+            </p>
+            <div class="edit-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Giờ Check-in</mat-label>
+                    <input matInput type="time" [(ngModel)]="editCheckIn">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Giờ Check-out</mat-label>
+                    <input matInput type="time" [(ngModel)]="editCheckOut">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Trạng thái</mat-label>
+                    <mat-select [(ngModel)]="editStatus">
+                        <mat-option value="PRESENT">Đúng giờ</mat-option>
+                        <mat-option value="LATE">Đi trễ</mat-option>
+                        <mat-option value="ABSENT">Vắng mặt</mat-option>
+                        <mat-option value="ON_LEAVE">Nghỉ phép</mat-option>
+                        <mat-option value="LATE_EARLY">Đi muộn về sớm</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Ghi chú</mat-label>
+                    <input matInput [(ngModel)]="editNote" placeholder="Lý do chỉnh sửa...">
+                </mat-form-field>
+            </div>
+            <div class="edit-actions">
+                <button mat-button (click)="cancelEdit()">Hủy</button>
+                <button mat-flat-button color="primary" (click)="saveEdit()">Lưu thay đổi</button>
+            </div>
+        </mat-card>
+    </div>
 </div>

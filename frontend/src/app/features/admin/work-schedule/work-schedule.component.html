@@ -1,0 +1,53 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Cài Đặt Giờ Làm Việc</h2>
+            <p>Cấu hình giờ check-in, check-out chuẩn và ngưỡng đi trễ</p>
+        </div>
+    </div>
+
+    <mat-card class="data-card settings-card">
+        <div class="settings-form">
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Giờ Check-in chuẩn</mat-label>
+                    <input matInput type="time" [(ngModel)]="schedule.standardCheckIn">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Giờ Check-out chuẩn</mat-label>
+                    <input matInput type="time" [(ngModel)]="schedule.standardCheckOut">
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Số phút trễ cho phép (đi muộn)</mat-label>
+                    <input matInput type="number" [(ngModel)]="schedule.lateThresholdMinutes" min="0" max="120">
+                    <mat-hint>Sau giờ check-in + số phút này sẽ tính là ĐI TRỄ</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Số phút cho phép về sớm</mat-label>
+                    <input matInput type="number" [(ngModel)]="schedule.earlyLeaveThresholdMinutes" min="0" max="120">
+                    <mat-hint>Trước giờ check-out - số phút này sẽ tính là VỀ SỚM</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="info-box">
+                <mat-icon>info</mat-icon>
+                <div>
+                    <strong>Ví dụ:</strong> Nếu giờ check-in = 08:00, ngưỡng trễ = 30 phút
+                    → Nhân viên check-in sau 08:30 sẽ bị tính là "Đi trễ".
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button mat-flat-button color="primary" (click)="save()" [disabled]="isSaving">
+                    <mat-icon>save</mat-icon>
+                    {{ isSaving ? 'Đang lưu...' : 'Lưu cấu hình' }}
+                </button>
+            </div>
+        </div>
+    </mat-card>
+</div>

@@ -14,10 +14,18 @@
 
     <mat-card class="data-card">
         <div class="table-actions">
-            <mat-form-field appearance="outline" class="search-field">
+            <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
                 <mat-label>Tìm kiếm nhân viên...</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Nhập tên, email, SDT...">
+                <input matInput (keyup)="applyFilter($event)" placeholder="Nhập tên, email, mã NV...">
                 <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="dept-filter" subscriptSizing="dynamic">
+                <mat-label>Phòng ban</mat-label>
+                <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="onDepartmentChange()">
+                    <mat-option value="">Tất cả phòng ban</mat-option>
+                    <mat-option *ngFor="let dept of departments" [value]="dept">{{dept}}</mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
 
@@ -56,6 +64,10 @@
                     <button mat-icon-button color="primary" [routerLink]="['/employees', element.id]"
                         matTooltip="Chi tiết">
                         <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" (click)="openSalaryChangeDialog(element)"
+                        matTooltip="Đề xuất đổi lương">
+                        <mat-icon>monetization_on</mat-icon>
                     </button>
                     <button mat-icon-button color="warn" (click)="deleteEmployee(element.id)" matTooltip="Xóa">
                         <mat-icon>delete</mat-icon>

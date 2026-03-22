@@ -1,0 +1,106 @@
+<div class="page-container">
+    <div class="page-header">
+        <div class="header-title">
+            <h2>Bảng Tổng Hợp Chấm Công</h2>
+            <p>Thống kê tổng hợp chấm công theo phòng ban và khoảng thời gian</p>
+        </div>
+        <div class="header-actions">
+            <button mat-flat-button color="primary" (click)="exportToExcel()">
+                <mat-icon>download</mat-icon>
+                <span>Xuất Excel</span>
+            </button>
+        </div>
+    </div>
+
+    <mat-card class="data-card filter-card">
+        <div class="filter-controls">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Phòng ban</mat-label>
+                <mat-select [(ngModel)]="selectedDepartment" (selectionChange)="loadSummary()">
+                    <mat-option value="">Tất cả phòng ban</mat-option>
+                    <mat-option *ngFor="let dept of departments" [value]="dept">{{dept}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Từ ngày</mat-label>
+                <input matInput type="date" [(ngModel)]="startDate" (change)="loadSummary()">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Đến ngày</mat-label>
+                <input matInput type="date" [(ngModel)]="endDate" (change)="loadSummary()">
+            </mat-form-field>
+        </div>
+    </mat-card>
+
+    <mat-card class="data-card">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 summary-table">
+
+            <ng-container matColumnDef="employeeCode">
+                <th mat-header-cell *matHeaderCellDef> Mã NV </th>
+                <td mat-cell *matCellDef="let e"> {{e.employeeCode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef> Họ và Tên </th>
+                <td mat-cell *matCellDef="let e">
+                    <div class="user-cell">
+                        <div class="user-avatar">{{e.fullName.charAt(0)}}</div>
+                        <span>{{e.fullName}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef> Phòng Ban </th>
+                <td mat-cell *matCellDef="let e">
+                    <mat-chip disabled class="dept-chip">{{e.department}}</mat-chip>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="presentDays">
+                <th mat-header-cell *matHeaderCellDef> Đúng giờ </th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="stat-badge present">{{e.presentDays}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="lateDays">
+                <th mat-header-cell *matHeaderCellDef> Đi trễ </th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="stat-badge late">{{e.lateDays}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="absentDays">
+                <th mat-header-cell *matHeaderCellDef> Vắng mặt </th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="stat-badge absent">{{e.absentDays}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="leaveDays">
+                <th mat-header-cell *matHeaderCellDef> Nghỉ phép </th>
+                <td mat-cell *matCellDef="let e">
+                    <span class="stat-badge leave">{{e.leaveDays}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalWorkHours">
+                <th mat-header-cell *matHeaderCellDef> Tổng giờ làm </th>
+                <td mat-cell *matCellDef="let e">
+                    <strong>{{e.totalWorkHours}}h</strong>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell empty-table-cell" colspan="8">Không có dữ liệu chấm công cho khoảng thời gian này.
+                </td>
+            </tr>
+        </table>
+    </mat-card>
+</div>

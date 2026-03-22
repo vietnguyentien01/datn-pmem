@@ -10,6 +10,7 @@ export interface Attendance {
     checkOut?: string;
     status?: string;
     note?: string;
+    employee?: any;
 }
 
 export interface AttendanceStatus {
@@ -18,6 +19,19 @@ export interface AttendanceStatus {
     checkIn?: string;
     checkOut?: string;
     status?: string;
+}
+
+export interface AttendanceSummary {
+    employeeId: number;
+    employeeCode: string;
+    fullName: string;
+    department: string;
+    totalDays: number;
+    presentDays: number;
+    lateDays: number;
+    absentDays: number;
+    leaveDays: number;
+    totalWorkHours: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +44,10 @@ export class AttendanceService {
         return this.http.get<Attendance[]>(`${this.api}/my/${employeeId}`);
     }
 
+    getMyAttendanceByRange(employeeId: number, start: string, end: string): Observable<Attendance[]> {
+        return this.http.get<Attendance[]>(`${this.api}/my/${employeeId}/range?start=${start}&end=${end}`);
+    }
+
     getTodayStatus(employeeId: number): Observable<AttendanceStatus> {
         return this.http.get<AttendanceStatus>(`${this.api}/today/${employeeId}`);
     }
@@ -38,13 +56,24 @@ export class AttendanceService {
         return this.http.get<Attendance[]>(`${this.api}/today`);
     }
 
-    getAll(employeeId?: number, startDate?: string, endDate?: string): Observable<Attendance[]> {
+    getAll(employeeId?: number, startDate?: string, endDate?: string, department?: string, employeeCode?: string): Observable<Attendance[]> {
         let params = new URLSearchParams();
         if (employeeId) params.append('employeeId', employeeId.toString());
         if (startDate) params.append('startDate', startDate);
         if (endDate) params.append('endDate', endDate);
+        if (department) params.append('department', department);
+        if (employeeCode) params.append('employeeCode', employeeCode);
         const query = params.toString() ? `?${params.toString()}` : '';
         return this.http.get<Attendance[]>(`${this.api}/all${query}`);
+    }
+
+    getSummary(department?: string, startDate?: string, endDate?: string): Observable<AttendanceSummary[]> {
+        let params = new URLSearchParams();
+        if (department) params.append('department', department);
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+        const query = params.toString() ? `?${params.toString()}` : '';
+        return this.http.get<AttendanceSummary[]>(`${this.api}/summary${query}`);
     }
 
     checkIn(employeeId: number): Observable<Attendance> {
@@ -53,5 +82,9 @@ export class AttendanceService {
 
     checkOut(employeeId: number): Observable<Attendance> {
         return this.http.post<Attendance>(`${this.api}/checkout/${employeeId}`, {});
+    }
+
+    updateAttendance(id: number, data: any): Observable<Attendance> {
+        return this.http.put<Attendance>(`${this.api}/${id}`, data);
     }
 }

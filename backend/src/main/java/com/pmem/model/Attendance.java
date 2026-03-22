@@ -36,6 +36,6 @@ public class Attendance {
     private String note;
 
     public enum AttendanceStatus {
-        PRESENT, ABSENT, LATE, HALF_DAY, ON_LEAVE
+        PRESENT, ABSENT, LATE, HALF_DAY, ON_LEAVE, LATE_EARLY
     }
 }

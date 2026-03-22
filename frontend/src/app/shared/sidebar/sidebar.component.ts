@@ -9,6 +9,8 @@ import { AuthService } from '../../core/services/auth.service';
 export class SidebarComponent implements OnInit {
   isManager: boolean = false;
   isAdmin: boolean = false;
+  isManagerOnly: boolean = false;
+  isHR: boolean = false;
 
   constructor(private authService: AuthService) { }
 
@@ -20,6 +22,12 @@ export class SidebarComponent implements OnInit {
       }
       if (user.role === 'ADMIN') {
         this.isAdmin = true;
+      }
+      if (user.role === 'MANAGER') {
+        this.isManagerOnly = true;
+      }
+      if (user.role === 'HR') {
+        this.isHR = true;
       }
     }
   }

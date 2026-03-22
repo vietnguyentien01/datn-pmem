@@ -43,8 +43,13 @@ public class Employee {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private User user;
+
+    @com.fasterxml.jackson.annotation.JsonProperty("role")
+    public String getRole() {
+        return user != null ? user.getRole().name() : null;
+    }
 
     public enum EmployeeStatus {
         ACTIVE, INACTIVE, ON_LEAVE

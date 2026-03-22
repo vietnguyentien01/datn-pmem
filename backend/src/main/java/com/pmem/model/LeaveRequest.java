@@ -58,6 +58,6 @@ public class LeaveRequest {
     }
 
     public enum LeaveStatus {
-        PENDING, APPROVED, REJECTED
+        PENDING, MANAGER_APPROVED, APPROVED, REJECTED
     }
 }

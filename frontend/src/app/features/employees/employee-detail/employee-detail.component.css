@@ -47,6 +47,41 @@
     padding: 24px;
 }
 
+/* Tab navigation */
+.tab-navigation {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0;
+}
+
+.tab-navigation button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px 8px 0 0;
+    color: #666;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.tab-navigation button.active {
+    color: #1A73E8;
+    border-bottom-color: #1A73E8;
+    background: rgba(26, 115, 232, 0.05);
+}
+
+.tab-navigation button mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* Form sections */
 .form-section {
     margin-bottom: 32px;
 }
@@ -63,8 +98,12 @@
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 16px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
 }
 
 .mat-mdc-form-field {
@@ -82,4 +121,86 @@
 
 .form-actions button {
     padding: 0 24px;
+}
+
+/* Tab content */
+.tab-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C3E50;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.add-form {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.add-form button {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    transition: box-shadow 0.2s;
+}
+
+.item-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.item-title mat-icon {
+    color: #1A73E8;
+    font-size: 20px;
+}
+
+.item-meta {
+    font-size: 13px;
+    color: #888;
+}
+
+.position-text {
+    color: #666;
+    font-weight: 400;
+}
+
+.type-chip {
+    font-size: 11px !important;
+    min-height: 22px !important;
+}
+
+.empty-text {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 32px;
 }

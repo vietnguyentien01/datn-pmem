@@ -75,9 +75,9 @@
                                     <div class="history-type">{{ item.leaveType }}</div>
                                 </div>
                                 <mat-chip
-                                    [ngClass]="{'status-pending': item.status === 'PENDING', 'status-approved': item.status === 'APPROVED', 'status-rejected': item.status === 'REJECTED'}">
-                                    {{ item.status === 'PENDING' ? 'Đang chờ' : (item.status === 'APPROVED' ? 'Đã duyệt'
-                                    : 'Từ chối') }}
+                                    [ngClass]="{'status-pending': item.status === 'PENDING', 'status-manager-approved': item.status === 'MANAGER_APPROVED', 'status-approved': item.status === 'APPROVED', 'status-rejected': item.status === 'REJECTED'}">
+                                    {{ item.status === 'PENDING' ? 'Đang chờ' : (item.status === 'MANAGER_APPROVED' ?
+                                    'Chờ NS Duyệt' : (item.status === 'APPROVED' ? 'Đã duyệt' : 'Từ chối')) }}
                                 </mat-chip>
                             </div>
                             <div class="history-reason">{{ item.reason }}</div>

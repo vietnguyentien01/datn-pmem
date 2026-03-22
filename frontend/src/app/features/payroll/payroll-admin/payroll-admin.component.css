@@ -1,0 +1,126 @@
+.page-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.header-title h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-title p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 16px 24px;
+    margin-bottom: 24px;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.month-select,
+.year-select {
+    width: 200px;
+}
+
+.data-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    position: relative;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-radius: 12px;
+}
+
+.request-table {
+    width: 100%;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #1A73E8;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.name {
+    font-weight: 500;
+    color: #333;
+}
+
+.action-column {
+    text-align: right;
+    padding-right: 16px !important;
+}
+
+.status-approved {
+    background-color: #e6f4ea;
+    color: #1e8e3e;
+    font-weight: 500;
+}
+
+.status-pending {
+    background-color: #fef7e0;
+    color: #f29900;
+    font-weight: 500;
+}
+
+.text-muted {
+    color: #999;
+    font-style: italic;
+}
+
+.empty-table-cell {
+    text-align: center;
+    color: #777;
+    padding: 32px;
+}

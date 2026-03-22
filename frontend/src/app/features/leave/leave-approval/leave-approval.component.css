@@ -34,7 +34,9 @@
     padding: 16px 24px;
     border-bottom: 1px solid #eee;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
     background-color: #fafbfc;
 }
 
@@ -87,6 +89,8 @@
 .leave-type {
     font-weight: 500;
     color: #333;
+    display: block;
+    margin-bottom: 2px;
 }
 
 .leave-reason {
@@ -105,6 +109,11 @@
     color: #f5b041;
 }
 
+.status-manager-approved {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
 .status-approved {
     background-color: #d5f5e3;
     color: #2ecc71;
@@ -113,6 +122,10 @@
 .status-rejected {
     background-color: #fadbd8;
     color: #e74c3c;
+}
+
+mat-chip {
+    white-space: nowrap;
 }
 
 .action-column {
@@ -141,4 +154,12 @@
     padding: 40px;
     color: #999;
     font-style: italic;
+}
+
+.tab-container-1 {
+    width: auto;
+}
+
+.tab-container-2 {
+    width: 100%;
 }

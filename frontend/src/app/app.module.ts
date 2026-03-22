@@ -22,6 +22,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,9 +42,14 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { EmployeeDetailComponent } from './features/employees/employee-detail/employee-detail.component';
 import { PayrollViewComponent } from './features/payroll/payroll-view/payroll-view.component';
 import { AttendanceHistoryComponent } from './features/attendance/attendance-history/attendance-history.component';
+import { AttendanceSummaryComponent } from './features/attendance/attendance-summary/attendance-summary.component';
 import { CheckinComponent } from './features/attendance/checkin/checkin.component';
+import { WorkScheduleComponent } from './features/admin/work-schedule/work-schedule.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { PayrollAdminComponent } from './features/payroll/payroll-admin/payroll-admin.component';
+import { SalaryChangeDialogComponent } from './features/employees/salary-change-dialog/salary-change-dialog.component';
+import { SalaryApprovalComponent } from './features/payroll/salary-approval/salary-approval.component';
 
 @NgModule({
   declarations: [
@@ -55,9 +63,14 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     EmployeeDetailComponent,
     PayrollViewComponent,
     AttendanceHistoryComponent,
+    AttendanceSummaryComponent,
     CheckinComponent,
+    WorkScheduleComponent,
     HeaderComponent,
     SidebarComponent,
+    PayrollAdminComponent,
+    SalaryChangeDialogComponent,
+    SalaryApprovalComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +96,9 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     MatProgressBarModule,
     MatPaginatorModule,
     MatButtonToggleModule,
+    MatTabsModule,
+    MatBadgeModule,
+    MatDividerModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

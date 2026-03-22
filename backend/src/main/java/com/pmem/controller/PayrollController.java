@@ -29,7 +29,7 @@ public class PayrollController {
     }
 
     @GetMapping("/all/{year}/{month}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasRole('HR')")
     public ResponseEntity<List<Payroll>> getAllPayroll(
             @PathVariable Integer year,
             @PathVariable Integer month) {
@@ -37,7 +37,7 @@ public class PayrollController {
     }
 
     @PostMapping("/{employeeId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasRole('HR')")
     public ResponseEntity<Payroll> createOrUpdate(
             @PathVariable Long employeeId,
             @RequestBody Payroll payroll) {

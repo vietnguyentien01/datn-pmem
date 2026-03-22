@@ -26,7 +26,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                         "(:keyword IS NULL OR LOWER(e.fullName) LIKE LOWER(CAST(:keyword AS string)) OR " +
                         "LOWER(e.employeeCode) LIKE LOWER(CAST(:keyword AS string)) OR " +
                         "LOWER(e.email) LIKE LOWER(CAST(:keyword AS string))) AND " +
-                        "(:status IS NULL OR e.status = :status)")
+                        "(:status IS NULL OR e.status = :status) AND " +
+                        "(:department IS NULL OR e.department = :department)")
         List<Employee> findEmployeesByKeyword(@Param("keyword") String keyword,
-                        @Param("status") Employee.EmployeeStatus status);
+                        @Param("status") Employee.EmployeeStatus status,
+                        @Param("department") String department);
+
+        @Query("SELECT DISTINCT e.department FROM Employee e WHERE e.department IS NOT NULL ORDER BY e.department")
+        List<String> findDistinctDepartments();
+
+        @Query("SELECT MAX(e.employeeCode) FROM Employee e")
+        String findMaxEmployeeCode();
 }

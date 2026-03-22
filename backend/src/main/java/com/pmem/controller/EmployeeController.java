@@ -1,6 +1,8 @@
 package com.pmem.controller;
 
+import com.pmem.model.Certification;
 import com.pmem.model.Employee;
+import com.pmem.model.WorkHistory;
 import com.pmem.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +22,20 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees(
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Employee.EmployeeStatus status) {
-        return ResponseEntity.ok(employeeService.getAllEmployees(keyword, status));
+            @RequestParam(required = false) Employee.EmployeeStatus status,
+            @RequestParam(required = false) String department) {
+        return ResponseEntity.ok(employeeService.getAllEmployees(keyword, status, department));
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<String>> getDepartments() {
+        return ResponseEntity.ok(employeeService.getAllDepartments());
+    }
+
+    @GetMapping("/next-code")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Map<String, String>> getNextCode() {
+        return ResponseEntity.ok(Map.of("code", employeeService.generateNextEmployeeCode()));
     }
 
     @GetMapping("/{id}")
@@ -53,5 +67,43 @@ public class EmployeeController {
     public ResponseEntity<Map<String, String>> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.ok(Map.of("message", "Đã vô hiệu hóa nhân viên thành công"));
+    }
+
+    // Certification endpoints
+    @GetMapping("/{id}/certifications")
+    public ResponseEntity<List<Certification>> getCertifications(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getCertifications(id));
+    }
+
+    @PostMapping("/{id}/certifications")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Certification> addCertification(@PathVariable Long id, @RequestBody Certification cert) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.addCertification(id, cert));
+    }
+
+    @DeleteMapping("/certifications/{certId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Map<String, String>> deleteCertification(@PathVariable Long certId) {
+        employeeService.deleteCertification(certId);
+        return ResponseEntity.ok(Map.of("message", "Đã xóa bằng cấp/chứng chỉ"));
+    }
+
+    // WorkHistory endpoints
+    @GetMapping("/{id}/work-history")
+    public ResponseEntity<List<WorkHistory>> getWorkHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getWorkHistory(id));
+    }
+
+    @PostMapping("/{id}/work-history")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<WorkHistory> addWorkHistory(@PathVariable Long id, @RequestBody WorkHistory history) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.addWorkHistory(id, history));
+    }
+
+    @DeleteMapping("/work-history/{historyId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Map<String, String>> deleteWorkHistory(@PathVariable Long historyId) {
+        employeeService.deleteWorkHistory(historyId);
+        return ResponseEntity.ok(Map.of("message", "Đã xóa lịch sử công tác"));
     }
 }

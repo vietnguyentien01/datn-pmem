@@ -38,15 +38,53 @@
 
 .filter-controls {
     display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
     align-items: center;
 }
 
-.month-select {
-    width: 250px;
+.filter-controls mat-form-field {
+    min-width: 160px;
+    flex: 1;
 }
 
 .attendance-table {
     width: 100%;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.user-code {
+    font-size: 12px;
+    color: #888;
 }
 
 .date-cell {
@@ -115,6 +153,16 @@
     color: #e74c3c;
 }
 
+.status-leave {
+    background-color: #d6eaf8;
+    color: #2980b9;
+}
+
+.status-late-early {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
 tr.table-row:hover {
     background-color: #f5f8ff;
 }
@@ -124,4 +172,53 @@ tr.table-row:hover {
     padding: 40px;
     color: #999;
     font-style: italic;
+}
+
+/* Edit overlay */
+.edit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.edit-dialog {
+    width: 460px;
+    padding: 28px;
+    border-radius: 16px;
+}
+
+.edit-dialog h3 {
+    margin: 0 0 4px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.edit-subtitle {
+    margin: 0 0 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edit-form mat-form-field {
+    width: 100%;
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
 }

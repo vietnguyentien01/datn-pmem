@@ -1,18 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface Payslip {
-  month: number;
-  year: number;
-  employeeName: string;
-  employeeCode: string;
-  department: string;
-  position: string;
-  baseSalary: number;
-  workingDays: number;
-  bonus: number;
-  deductions: number;
-  netSalary: number;
-}
+import { AuthService } from '../../../core/services/auth.service';
+import { PayrollService, Payroll } from '../../../core/services/payroll.service';
+import { EmployeeService, Employee } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-payroll-view',
@@ -20,39 +9,45 @@ export interface Payslip {
   styleUrls: ['./payroll-view.component.css']
 })
 export class PayrollViewComponent implements OnInit {
-  availableMonths = [
-    { value: '03-2024', label: 'Tháng 03/2024' },
-    { value: '02-2024', label: 'Tháng 02/2024' },
-    { value: '01-2024', label: 'Tháng 01/2024' },
-  ];
-  selectedMonthStr = '03-2024';
+  payrolls: Payroll[] = [];
+  currentPayroll: Payroll | null = null;
+  employee: Employee | null = null;
+  selectedIndex = 0;
 
-  currentPayslip: Payslip | null = null;
-
-  allPayslips: { [key: string]: Payslip } = {
-    '03-2024': {
-      month: 3, year: 2024,
-      employeeName: 'Trần Thị Nhỏ', employeeCode: 'NV001',
-      department: 'Phòng Kỹ Thuật', position: 'Nhân viên',
-      baseSalary: 20000000, workingDays: 22,
-      bonus: 1000000, deductions: 2100000, netSalary: 18900000
-    },
-    '02-2024': {
-      month: 2, year: 2024,
-      employeeName: 'Trần Thị Nhỏ', employeeCode: 'NV001',
-      department: 'Phòng Kỹ Thuật', position: 'Nhân viên',
-      baseSalary: 20000000, workingDays: 20,
-      bonus: 500000, deductions: 2100000, netSalary: 18400000
-    }
-  };
-
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private payrollService: PayrollService,
+    private employeeService: EmployeeService
+  ) { }
 
   ngOnInit(): void {
-    this.onMonthChange();
+    const user = this.authService.getCurrentUser();
+    if (user && user.employeeId) {
+      this.loadEmployee(user.employeeId);
+      this.loadPayrolls(user.employeeId);
+    }
+  }
+
+  loadEmployee(employeeId: number) {
+    this.employeeService.getById(employeeId).subscribe({
+      next: (data) => this.employee = data,
+      error: (err) => console.error('Lỗi tải thông tin nhân viên', err)
+    });
+  }
+
+  loadPayrolls(employeeId: number) {
+    this.payrollService.getMyPayrolls(employeeId).subscribe({
+      next: (data) => {
+        this.payrolls = data;
+        if (data.length > 0) {
+          this.currentPayroll = data[0];
+        }
+      },
+      error: (err) => console.error('Lỗi tải bảng lương', err)
+    });
   }
 
   onMonthChange() {
-    this.currentPayslip = this.allPayslips[this.selectedMonthStr] || null;
+    this.currentPayroll = this.payrolls[this.selectedIndex] || null;
   }
 }

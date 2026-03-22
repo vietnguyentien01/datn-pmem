@@ -2,6 +2,7 @@ package com.pmem.config;
 
 import com.pmem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class AppConfig {
 
     private final UserRepository userRepository;
@@ -24,10 +26,14 @@ public class AppConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))))
+                .map(user -> {
+                    log.info("Loading UserDetailsService for: {}, role: {}, pass_len: {}",
+                            user.getUsername(), user.getRole(), user.getPassword().length());
+                    return new org.springframework.security.core.userdetails.User(
+                            user.getUsername(),
+                            user.getPassword(),
+                            List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                })
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng: " + username));
     }
 

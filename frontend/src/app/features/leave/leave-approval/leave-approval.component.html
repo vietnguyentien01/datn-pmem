@@ -8,12 +8,25 @@
 
     <mat-card class="data-card">
         <div class="filter-section">
-            <mat-button-toggle-group [(ngModel)]="statusFilter" (change)="filterData()">
-                <mat-button-toggle value="ALL">Tất cả</mat-button-toggle>
-                <mat-button-toggle value="PENDING">Đang chờ</mat-button-toggle>
-                <mat-button-toggle value="APPROVED">Đã duyệt</mat-button-toggle>
-                <mat-button-toggle value="REJECTED">Từ chối</mat-button-toggle>
-            </mat-button-toggle-group>
+            <div class="tab-container-1">
+                <mat-button-toggle-group [(ngModel)]="statusFilter" (change)="filterData()">
+                    <mat-button-toggle value="ALL">Tất cả</mat-button-toggle>
+                    <mat-button-toggle value="PENDING">Đang chờ</mat-button-toggle>
+                    <mat-button-toggle value="MANAGER_APPROVED">Chờ NS Duyệt</mat-button-toggle>
+                    <mat-button-toggle value="APPROVED">Đã duyệt</mat-button-toggle>
+                    <mat-button-toggle value="REJECTED">Từ chối</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+            <div class="tab-container-2">
+                <mat-form-field class="dept-filter" appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Phòng ban</mat-label>
+                    <mat-select [(ngModel)]="departmentFilter" (selectionChange)="filterData()">
+                        <mat-option value="">Tất cả phòng ban</mat-option>
+                        <mat-option *ngFor="let dept of departments" [value]="dept">{{dept}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
         </div>
 
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 request-table">
@@ -45,8 +58,6 @@
                 <th mat-header-cell *matHeaderCellDef> Loại nghỉ phép </th>
                 <td mat-cell *matCellDef="let element">
                     <span class="leave-type">{{element.leaveType}}</span>
-                    <br>
-                    <span class="leave-reason">{{element.reason}}</span>
                 </td>
             </ng-container>
 
@@ -55,9 +66,9 @@
                 <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
                 <td mat-cell *matCellDef="let element">
                     <mat-chip
-                        [ngClass]="{'status-pending': element.status === 'PENDING', 'status-approved': element.status === 'APPROVED', 'status-rejected': element.status === 'REJECTED'}">
-                        {{ element.status === 'PENDING' ? 'Đang chờ' : (element.status === 'APPROVED' ? 'Đã duyệt' : 'Từ
-                        chối') }}
+                        [ngClass]="{'status-pending': element.status === 'PENDING', 'status-manager-approved': element.status === 'MANAGER_APPROVED', 'status-approved': element.status === 'APPROVED', 'status-rejected': element.status === 'REJECTED'}">
+                        {{ element.status === 'PENDING' ? 'Đang chờ' : (element.status === 'MANAGER_APPROVED' ? 'Chờ NS
+                        Duyệt' : (element.status === 'APPROVED' ? 'Đã duyệt' : 'Từ chối')) }}
                     </mat-chip>
                 </td>
             </ng-container>
@@ -66,15 +77,23 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef class="action-column"> Phê duyệt </th>
                 <td mat-cell *matCellDef="let element" class="action-column">
-                    <div class="action-buttons" *ngIf="element.status === 'PENDING'">
-                        <button mat-icon-button class="btn-approve" (click)="updateStatus(element.id, 'APPROVED')"
-                            matTooltip="Duyệt">
-                            <mat-icon>check_circle</mat-icon>
+                    <div class="action-buttons">
+                        <!-- Nút xem Lý Do -->
+                        <button mat-icon-button color="primary" (click)="viewReason(element.reason)"
+                            matTooltip="Xem lý do chi tiết">
+                            <mat-icon>visibility</mat-icon>
                         </button>
-                        <button mat-icon-button class="btn-reject" (click)="updateStatus(element.id, 'REJECTED')"
-                            matTooltip="Từ chối">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
+                        <!-- Nút Duyệt/Từ chối -->
+                        <ng-container *ngIf="element.status === 'PENDING' || element.status === 'MANAGER_APPROVED'">
+                            <button mat-icon-button class="btn-approve" (click)="updateStatus(element.id, 'APPROVED')"
+                                matTooltip="Duyệt">
+                                <mat-icon>check_circle</mat-icon>
+                            </button>
+                            <button mat-icon-button class="btn-reject" (click)="updateStatus(element.id, 'REJECTED')"
+                                matTooltip="Từ chối">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </ng-container>
                     </div>
                 </td>
             </ng-container>
@@ -87,4 +106,15 @@
             </tr>
         </table>
     </mat-card>
+
+    <!-- Template xem lý do -->
+    <ng-template #reasonDialog let-data>
+        <h2 mat-dialog-title>Ghi chú / Lý do nghỉ phép</h2>
+        <mat-dialog-content>
+            <p style="white-space: pre-wrap; font-size: 15px; color: #333; line-height: 1.6;">{{ data.reason }}</p>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close color="primary">Đóng</button>
+        </mat-dialog-actions>
+    </ng-template>
 </div>

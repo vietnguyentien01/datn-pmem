@@ -132,6 +132,11 @@ mat-card-title {
     color: #f5b041;
 }
 
+.status-manager-approved {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
 .status-approved {
     background-color: #d5f5e3;
     color: #2ecc71;

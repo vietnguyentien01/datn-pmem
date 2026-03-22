@@ -14,6 +14,13 @@ export interface Payroll {
     deductions?: number;
     netSalary?: number;
     note?: string;
+    employee?: {
+        id: number;
+        fullName: string;
+        employeeCode: string;
+        department: string;
+        position: string;
+    };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -28,5 +35,13 @@ export class PayrollService {
 
     getMyPayrollByMonth(employeeId: number, year: number, month: number): Observable<Payroll> {
         return this.http.get<Payroll>(`${this.api}/my/${employeeId}/${year}/${month}`);
+    }
+
+    getAllPayrolls(year: number, month: number): Observable<Payroll[]> {
+        return this.http.get<Payroll[]>(`${this.api}/all/${year}/${month}`);
+    }
+
+    createOrUpdatePayroll(employeeId: number, payroll: Partial<Payroll>): Observable<Payroll> {
+        return this.http.post<Payroll>(`${this.api}/${employeeId}`, payroll);
     }
 }

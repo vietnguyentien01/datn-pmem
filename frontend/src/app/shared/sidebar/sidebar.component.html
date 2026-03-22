@@ -14,35 +14,66 @@
 
         <ng-container *ngIf="isAdmin">
             <div class="nav-section">Nhân sự</div>
-            <a routerLink="/employees" routerLinkActive="active" class="nav-item">
+            <a routerLink="/employees" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                class="nav-item">
                 <mat-icon>people</mat-icon>
                 <span>Hồ sơ nhân viên</span>
             </a>
+            <a routerLink="/employees/new" routerLinkActive="active" class="nav-item">
+                <mat-icon>person_add</mat-icon>
+                <span>Tạo tài khoản</span>
+            </a>
         </ng-container>
 
-        <div class="nav-section">Chấm công & Nghỉ phép</div>
-        <a routerLink="/attendance/history" routerLinkActive="active" class="nav-item">
-            <mat-icon>calendar_today</mat-icon>
+        <div class="nav-section">Chấm công &amp; Nghỉ phép</div>
+        <a routerLink="/attendance/history" *ngIf="isHR" routerLinkActive="active" class="nav-item">
+            <mat-icon>manage_history</mat-icon>
             <span>Quản lý chấm công</span>
         </a>
-        <a routerLink="/attendance/checkin" routerLinkActive="active" class="nav-item">
+        <a routerLink="/attendance/history" *ngIf="!isAdmin && !isHR" routerLinkActive="active" class="nav-item">
+            <mat-icon>history</mat-icon>
+            <span>Lịch sử điểm danh</span>
+        </a>
+        <a routerLink="/attendance/checkin" *ngIf="!isAdmin" routerLinkActive="active" class="nav-item">
             <mat-icon>fingerprint</mat-icon>
             <span>Check-in / Out</span>
         </a>
+        <a routerLink="/attendance/summary" *ngIf="isHR" routerLinkActive="active" class="nav-item">
+            <mat-icon>assessment</mat-icon>
+            <span>Tổng hợp chấm công</span>
+        </a>
 
-        <a routerLink="/leave/request" routerLinkActive="active" class="nav-item">
+        <a routerLink="/leave/request" *ngIf="!isAdmin" routerLinkActive="active" class="nav-item">
             <mat-icon>event_note</mat-icon>
             <span>Xin nghỉ phép</span>
         </a>
-        <a routerLink="/leave/approval" *ngIf="isManager" routerLinkActive="active" class="nav-item">
+        <a routerLink="/leave/approval" *ngIf="isManager || isHR" routerLinkActive="active" class="nav-item">
             <mat-icon>fact_check</mat-icon>
             <span>Duyệt nghỉ phép</span>
         </a>
 
-        <div class="nav-section">Tài chính</div>
-        <a routerLink="/payroll" routerLinkActive="active" class="nav-item">
-            <mat-icon>payments</mat-icon>
-            <span>Bảng lương</span>
-        </a>
+        <ng-container>
+            <div class="nav-section">Tài chính</div>
+            <a routerLink="/payroll/admin" *ngIf="isHR" routerLinkActive="active" class="nav-item">
+                <mat-icon>account_balance</mat-icon>
+                <span>Quản lý lương</span>
+            </a>
+            <a routerLink="/salary/approval" *ngIf="isAdmin" routerLinkActive="active" class="nav-item">
+                <mat-icon>rule</mat-icon>
+                <span>Duyệt đổi lương</span>
+            </a>
+            <a routerLink="/payroll/me" *ngIf="!isAdmin" routerLinkActive="active" class="nav-item">
+                <mat-icon>payments</mat-icon>
+                <span>Lương của tôi</span>
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="isAdmin">
+            <div class="nav-section">Cài đặt</div>
+            <a routerLink="/admin/work-schedule" routerLinkActive="active" class="nav-item">
+                <mat-icon>schedule</mat-icon>
+                <span>Cài đặt giờ làm</span>
+            </a>
+        </ng-container>
     </nav>
 </div>

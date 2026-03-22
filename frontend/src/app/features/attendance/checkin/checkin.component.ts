@@ -45,12 +45,10 @@ export class CheckinComponent implements OnInit, OnDestroy {
         this.hasCheckedIn = status.hasCheckedIn;
         this.hasCheckedOut = status.hasCheckedOut;
         if (status.checkIn) {
-          const ci = new Date(status.checkIn);
-          this.checkInTime = ci.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          this.checkInTime = status.checkIn.substring(0, 5);
         }
         if (status.checkOut) {
-          const co = new Date(status.checkOut);
-          this.checkOutTime = co.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          this.checkOutTime = status.checkOut.substring(0, 5);
         }
       },
       error: (err) => console.error('Lỗi tải trạng thái điểm danh hôm nay', err)
@@ -69,8 +67,7 @@ export class CheckinComponent implements OnInit, OnDestroy {
     this.attendanceService.checkIn(this.currentEmployeeId).subscribe({
       next: (res) => {
         if (res.checkIn) {
-          const ci = new Date(res.checkIn);
-          this.checkInTime = ci.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          this.checkInTime = res.checkIn.substring(0, 5);
         }
         this.hasCheckedIn = true;
         this.isProcessing = false;
@@ -90,8 +87,7 @@ export class CheckinComponent implements OnInit, OnDestroy {
     this.attendanceService.checkOut(this.currentEmployeeId).subscribe({
       next: (res) => {
         if (res.checkOut) {
-          const co = new Date(res.checkOut);
-          this.checkOutTime = co.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+          this.checkOutTime = res.checkOut.substring(0, 5);
         }
         this.hasCheckedOut = true;
         this.isProcessing = false;

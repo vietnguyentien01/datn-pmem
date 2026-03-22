@@ -1,10 +1,13 @@
 package com.pmem.controller;
 
+import com.pmem.dto.AttendanceSummaryDTO;
+import com.pmem.dto.AttendanceUpdateDTO;
 import com.pmem.model.Attendance;
 import com.pmem.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,11 +39,24 @@ public class AttendanceController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('HR')")
     public ResponseEntity<List<Attendance>> getAll(
             @RequestParam(required = false) Long employeeId,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String employeeCode,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ResponseEntity.ok(attendanceService.getAllAttendance(employeeId, startDate, endDate));
+        return ResponseEntity
+                .ok(attendanceService.getAllAttendance(employeeId, department, employeeCode, startDate, endDate));
+    }
+
+    @GetMapping("/summary")
+    @PreAuthorize("hasRole('HR')")
+    public ResponseEntity<List<AttendanceSummaryDTO>> getSummary(
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return ResponseEntity.ok(attendanceService.getAttendanceSummary(department, startDate, endDate));
     }
 
     @GetMapping("/today/{employeeId}")
@@ -71,5 +87,13 @@ public class AttendanceController {
     @PostMapping("/checkout/{employeeId}")
     public ResponseEntity<Attendance> checkOut(@PathVariable Long employeeId) {
         return ResponseEntity.ok(attendanceService.checkOut(employeeId));
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('HR')")
+    public ResponseEntity<Attendance> updateAttendance(
+            @PathVariable Long id,
+            @RequestBody AttendanceUpdateDTO dto) {
+        return ResponseEntity.ok(attendanceService.updateAttendance(id, dto));
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService, AppNotification } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +13,13 @@ export class HeaderComponent implements OnInit {
   userRole: string = 'Employee';
   userInitial: string = 'U';
 
+  notifications: AppNotification[] = [];
+  unreadCount: number = 0;
+
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -23,6 +28,39 @@ export class HeaderComponent implements OnInit {
       this.userName = user.username;
       this.userRole = user.role;
       this.userInitial = this.userName.charAt(0).toUpperCase();
+      this.loadNotifications();
+    }
+  }
+
+  loadNotifications() {
+    this.notificationService.getMyNotifications().subscribe({
+      next: (data) => {
+        this.notifications = data;
+        this.unreadCount = data.filter(n => !n.isRead).length;
+      },
+      error: (err) => console.error('Lỗi tải thông báo', err)
+    });
+  }
+
+  markAsRead(n: AppNotification) {
+    if (!n.isRead) {
+      this.notificationService.markAsRead(n.id).subscribe({
+        next: () => {
+          n.isRead = true;
+          this.unreadCount = Math.max(0, this.unreadCount - 1);
+        }
+      });
+    }
+  }
+
+  markAllAsRead() {
+    if (this.unreadCount > 0) {
+      this.notificationService.markAllAsRead().subscribe({
+        next: () => {
+          this.notifications.forEach(n => n.isRead = true);
+          this.unreadCount = 0;
+        }
+      });
     }
   }
 

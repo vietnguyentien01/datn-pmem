@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/leave")
@@ -31,9 +30,10 @@ public class LeaveController {
     @GetMapping("/all")
     public ResponseEntity<List<LeaveRequest>> getAll(
             @RequestParam(required = false) LeaveRequest.LeaveStatus status,
+            @RequestParam(required = false) String department,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ResponseEntity.ok(leaveService.getAllRequests(status, startDate, endDate));
+        return ResponseEntity.ok(leaveService.getAllRequests(status, department, startDate, endDate));
     }
 
     @PostMapping("/request/{employeeId}")

@@ -33,6 +33,9 @@
 .table-actions {
     padding: 16px 24px;
     border-bottom: 1px solid #eee;
+    display: flex;
+    gap: 16px;
+    align-items: center;
 }
 
 .search-field {

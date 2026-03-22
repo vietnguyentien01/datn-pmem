@@ -1,0 +1,74 @@
+.filter-controls {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-controls mat-form-field {
+    min-width: 180px;
+    flex: 1;
+}
+
+.stat-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 28px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 0 10px;
+}
+
+.stat-badge.present {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.stat-badge.late {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.stat-badge.absent {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.stat-badge.leave {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
