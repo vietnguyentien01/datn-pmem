@@ -47,7 +47,8 @@
             <mat-icon>event_note</mat-icon>
             <span>Xin nghỉ phép</span>
         </a>
-        <a routerLink="/leave/approval" *ngIf="isManagerOnly || isHR" routerLinkActive="active" class="nav-item">
+        <a routerLink="/leave/approval" *ngIf="isManagerOnly || isHR || isAdmin" routerLinkActive="active"
+            class="nav-item">
             <mat-icon>fact_check</mat-icon>
             <span>Duyệt nghỉ phép</span>
         </a>

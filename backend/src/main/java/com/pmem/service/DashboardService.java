@@ -18,15 +18,14 @@ public class DashboardService {
 
     public DashboardStats getStats() {
         LocalDate today = LocalDate.now();
-        long totalEmployees = employeeRepository.countByStatus(com.pmem.model.Employee.EmployeeStatus.ACTIVE) > 0
-                ? employeeRepository.findByStatus(com.pmem.model.Employee.EmployeeStatus.ACTIVE).size()
-                : employeeRepository.count();
+        long totalEmployees = employeeRepository.countByStatus(com.pmem.model.Employee.EmployeeStatus.ACTIVE);
 
         long presentToday = attendanceRepository.countPresentToday(today);
         long lateToday = attendanceRepository.countLateToday(today);
+        long onLeaveToday = leaveRequestRepository.countOnLeaveToday(today);
         long pendingLeave = leaveRequestRepository.countByStatus(com.pmem.model.LeaveRequest.LeaveStatus.PENDING);
 
-        long absentToday = totalEmployees - presentToday - lateToday;
+        long absentToday = totalEmployees - presentToday - lateToday - onLeaveToday;
         if (absentToday < 0)
             absentToday = 0;
 
@@ -39,7 +38,7 @@ public class DashboardService {
                 .presentToday(presentToday)
                 .lateToday(lateToday)
                 .absentToday(absentToday)
-                .onLeaveToday(0)
+                .onLeaveToday(onLeaveToday)
                 .pendingLeaveRequests(pendingLeave)
                 .attendanceRate(Math.round(attendanceRate * 10.0) / 10.0)
                 .build();

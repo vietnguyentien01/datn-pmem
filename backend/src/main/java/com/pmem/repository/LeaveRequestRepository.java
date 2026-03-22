@@ -17,6 +17,9 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
 
         long countByStatus(LeaveRequest.LeaveStatus status);
 
+        @Query("SELECT COUNT(DISTINCT l.employee.id) FROM LeaveRequest l WHERE l.status = 'APPROVED' AND l.startDate <= :today AND l.endDate >= :today")
+        long countOnLeaveToday(@Param("today") LocalDate today);
+
         @Query("SELECT l FROM LeaveRequest l WHERE " +
                         "(:status IS NULL OR l.status = :status) AND " +
                         "(:department IS NULL OR l.employee.department = :department) AND " +

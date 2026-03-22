@@ -1,0 +1,30 @@
+# ===== Backend (Java / Maven) =====
+backend/target/
+*.class
+*.jar
+*.war
+
+# ===== Frontend (Angular / Node.js) =====
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# ===== IDE & Editor =====
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+
+# ===== Docker volumes =====
+mysql_data/
+
+# ===== Environment =====
+.env

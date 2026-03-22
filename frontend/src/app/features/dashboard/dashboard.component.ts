@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService, DashboardStats } from '../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,15 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  stats = {
+  stats: DashboardStats = {
     totalEmployees: 0,
     presentToday: 0,
-    onLeaveToday: 0
+    absentToday: 0,
+    lateToday: 0,
+    onLeaveToday: 0,
+    pendingLeaveRequests: 0,
+    attendanceRate: 0
   };
 
-  constructor() { }
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
-    // Gọi API thống kê
+    this.dashboardService.getStats().subscribe({
+      next: (data) => this.stats = data,
+      error: (err) => console.error('Lỗi tải thống kê dashboard', err)
+    });
   }
 }

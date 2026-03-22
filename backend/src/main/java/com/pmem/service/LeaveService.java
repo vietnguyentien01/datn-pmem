@@ -77,8 +77,9 @@ public class LeaveService {
         // Logic duyệt (Approval logic)
         // 2. Nếu người xin là Quản lý (MANAGER)
         if (requesterRole == User.Role.MANAGER) {
-            if (approverRole != User.Role.MANAGER && approverRole != User.Role.ADMIN) {
-                throw new RuntimeException("Đơn của Quản lý phải do Quản lý khác hoặc Admin duyệt!");
+            if (approverRole != User.Role.MANAGER && approverRole != User.Role.ADMIN
+                    && approverRole != User.Role.HR) {
+                throw new RuntimeException("Đơn của Quản lý phải do Quản lý khác, HR hoặc Admin duyệt!");
             }
             request.setStatus(LeaveRequest.LeaveStatus.APPROVED);
         }
@@ -89,17 +90,10 @@ public class LeaveService {
             }
             request.setStatus(LeaveRequest.LeaveStatus.APPROVED);
         }
-        // 4. Nếu người xin là Nhân viên (EMPLOYEE)
+        // 4. Nếu người xin là Nhân viên (EMPLOYEE) — chỉ cần 1 lần duyệt
         else {
-            if (approverRole == User.Role.MANAGER) {
-                request.setStatus(LeaveRequest.LeaveStatus.MANAGER_APPROVED);
-            } else if (approverRole == User.Role.HR) {
-                if (request.getStatus() != LeaveRequest.LeaveStatus.MANAGER_APPROVED) {
-                    throw new RuntimeException(
-                            "Đơn của Nhân viên phải được Quản lý trực tiếp duyệt trước khi Nhân sự duyệt chốt!");
-                }
-                request.setStatus(LeaveRequest.LeaveStatus.APPROVED);
-            } else if (approverRole == User.Role.ADMIN) {
+            if (approverRole == User.Role.MANAGER || approverRole == User.Role.HR
+                    || approverRole == User.Role.ADMIN) {
                 request.setStatus(LeaveRequest.LeaveStatus.APPROVED);
             } else {
                 throw new RuntimeException("Bạn không có quyền duyệt đơn này!");
